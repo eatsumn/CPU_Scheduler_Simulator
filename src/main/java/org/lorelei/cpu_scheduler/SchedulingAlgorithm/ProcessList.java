@@ -1,12 +1,14 @@
 package org.lorelei.cpu_scheduler.SchedulingAlgorithm;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
 public class ProcessList{
 
-    public static void highestAT(ArrayList<Process> inputList){
+    public static double highestAT(ArrayList<Process> inputList){
         Iterator<Process> checkList = inputList.iterator();
         Double highestAT = 0.0;
         int longestAT = 0;
@@ -18,6 +20,22 @@ public class ProcessList{
             }
         }
         System.out.println("highest is: " + highestAT + " at index:" + longestAT);
+        return highestAT;
+    }
+
+    public static double highestBT(ArrayList<Process> inputList){
+        Iterator<Process> checkList = inputList.iterator();
+        Double highestBT = 0.0;
+        int longestBT = 0;
+        while (checkList.hasNext()){
+            Process current = checkList.next();
+            if(current.burstTime >= highestBT) {
+                highestBT = current.burstTime;
+                longestBT = current.processNumber;
+            }
+        }
+        System.out.println("highest is: " + highestBT + " at index:" + longestBT);
+        return highestBT;
     }
 
     public static int lowestAT(ArrayList<Process> inputList) {

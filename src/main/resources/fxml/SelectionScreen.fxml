@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -63,5 +64,12 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
         </items>
       </SplitPane>
+      <ToolBar layoutX="14.0" layoutY="490.0" prefHeight="40.0" prefWidth="567.0">
+        <items>
+          <Button fx:id="clearListButton" mnemonicParsing="false" onAction="#ClearList" text="Clear List" />
+            <Button fx:id="removeLastButton" mnemonicParsing="false" onAction="#RemoveLastProcess" text="Remove Last" />
+            <Button fx:id="addRandomButton" mnemonicParsing="false" onAction="#AddRandomProcess" text="Add Random" />
+        </items>
+      </ToolBar>
    </children>
 </AnchorPane>

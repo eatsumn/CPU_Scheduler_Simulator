@@ -14,10 +14,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
+import org.lorelei.cpu_scheduler.SchedulingAlgorithm.ProcessList;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class SelectionScreenController implements Initializable {
@@ -32,6 +35,12 @@ public class SelectionScreenController implements Initializable {
 
     @FXML
     private Button addProcessButton;
+
+    @FXML
+    private Button clearListButton;
+
+    @FXML
+    private Button addRandomButton;
 
     @FXML
     private TextField inputArrivalTime;
@@ -56,6 +65,32 @@ public class SelectionScreenController implements Initializable {
 
     @FXML
     private TableColumn<Process, Double> tableBurstTime;
+
+    @FXML
+    void AddRandomProcess(ActionEvent event) {
+        ArrayList<Process> list = new ArrayList<Process>(processTable.getItems());
+        System.out.println(list);
+        double highAT = (ProcessList.highestAT(list));
+        double highBT = (ProcessList.highestBT(list));
+
+        if(highAT<=1) highAT = Math.random() * 10;
+        if(highBT<=1) highBT = Math.random() * 10;
+
+        Process newProcess = new Process(++tableIndex, (Math.ceil(Math.random() * (highAT + Math.random() * 5))), (Math.ceil(Math.random() * (highBT + Math.random() * 5))));
+        processTable.getItems().add(newProcess);
+    }
+
+    @FXML
+    void ClearList(ActionEvent event) {
+        if(!processTable.getItems().isEmpty()) processTable.getItems().removeAll(processTable.getItems());
+        tableIndex = 0;
+    }
+
+    @FXML
+    void RemoveLastProcess(ActionEvent event) {
+        if(!processTable.getItems().isEmpty()) processTable.getItems().removeLast();
+        tableIndex--;
+    }
 
     @FXML
     void addProcess(ActionEvent event) {
