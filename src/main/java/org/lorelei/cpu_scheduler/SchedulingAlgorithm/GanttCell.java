@@ -55,10 +55,13 @@ public class GanttCell{
 
     @Override
     public String toString() {
+        String holder = "||||||||||||||||||";
         if(!isIdle){
-            return process + " | TAIL: " + startTime + " | HEAD: " + completeTime + "\n";
+            holder += process;
         }else{
-            return "IDLE | TAIL: " + startTime + " | HEAD: " + completeTime + "\n";
+            holder += "IDLE";
         }
+        holder +=  " | TAIL: " + startTime + " | HEAD: " + completeTime + "\n - - - - - Wait List: " + getProcessWaitList() + "\n - - - - - Ready List: " + getProcessReadyList() + "\n - - - - - Complete List: " + getProcessCompleteList() + "\n";
+        return holder;
     }
 }

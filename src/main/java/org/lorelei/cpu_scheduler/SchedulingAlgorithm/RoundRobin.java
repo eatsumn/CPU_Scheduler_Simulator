@@ -6,6 +6,7 @@ public class RoundRobin {
     ArrayList<Process> inputProcessList = new ArrayList<Process>();
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
+    ArrayList<Process> processCompletedList = new ArrayList<Process>();
 
 
     float completeTime;
@@ -45,8 +46,8 @@ public class RoundRobin {
 
             Double computedExecutionTime = Math.min(timeQuantum, selected.burstTime);
             selected.setBurstTime(selected.burstTime - computedExecutionTime);
-
-            ganttChart.addCell(new GanttCell(currentTime, currentTime + computedExecutionTime, new Process(selected.processNumber, selected.arrivalTime, selected.burstTime)));
+            GanttCell tempGanttCell = new GanttCell(currentTime, currentTime + computedExecutionTime, new Process(selected.processNumber, selected.arrivalTime, selected.burstTime));
+            ganttChart.addCell(tempGanttCell);
 
             currentTime += computedExecutionTime;
 
@@ -54,11 +55,18 @@ public class RoundRobin {
 
             processReadyList.addAll(tempSelected);
             if(selected.burstTime > 0) processReadyList.add(processReadyList.getFirst());
+            if(selected.burstTime == 0) processCompletedList.add(selected);
             processReadyList.removeFirst();
             processWaitList.removeAll(tempSelected);
 
             System.out.println("\npost process gannt chart | " + ganttChart);
-            System.out.println("\nready list post gannt chart | " + processReadyList);
+
+
+            ganttChart.setLastListData(processWaitList,processReadyList, processCompletedList);
+            System.out.println("WAITLISTt chart | " + ganttChart.getLastCell().getProcessWaitList());
+            System.out.println("COMPLETEDLIST chart | " + ganttChart.getLastCell().getProcessCompleteList());
+
+
 
             temp++;
         }
