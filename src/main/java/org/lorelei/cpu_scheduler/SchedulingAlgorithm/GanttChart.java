@@ -21,6 +21,10 @@ public class GanttChart {
         return chart.getLast();
     }
 
+    public GanttCell getChart(int index) {
+        return chart.get(index);
+    }
+
     public ArrayList<GanttCell> getChart() {
         return chart;
     }
