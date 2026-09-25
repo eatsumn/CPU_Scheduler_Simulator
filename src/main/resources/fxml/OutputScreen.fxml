@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+   <children>
+      <ScrollPane fitToHeight="true" layoutX="20.0" layoutY="510.0" prefHeight="70.0" prefWidth="810.0" style="-fx-background-color: green; -fx-border-color: orange;" vbarPolicy="NEVER">
+         <content>
+            <HBox fx:id="ganntChartVisualizer" prefHeight="48.0" style="-fx-border-width: 5; -fx-background-color: #bc86cccc;">
+               <children>
+                  <TilePane alignment="CENTER" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: yellow; -fx-border-color: blue;">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="P1" />
+                     </children>
+                  </TilePane>
+               </children>
+            </HBox>
+         </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>

@@ -10,12 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SelectionScreenController implements Initializable {
@@ -24,7 +26,9 @@ public class SelectionScreenController implements Initializable {
     private Parent root;
     private int tableIndex = 0;
     private boolean inputError;
+    String choice;
 
+    String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
 
     @FXML
     private Button addProcessButton;
@@ -37,6 +41,12 @@ public class SelectionScreenController implements Initializable {
 
     @FXML
     private TableView<Process> processTable;
+
+    @FXML
+    private ChoiceBox<String> algoChoice;
+
+    @FXML
+    private HBox timeQuantumContainer;
 
     @FXML
     private TableColumn<Process, Double> tableArrivalTime;
@@ -151,6 +161,18 @@ public class SelectionScreenController implements Initializable {
 
     }
 
+    public void getAlgoChoice(ActionEvent event){
+        choice = algoChoice.getValue();
+
+        if(!choice.equals("Round Robin")){
+            timeQuantumContainer.setVisible(false);
+            timeQuantumContainer.setVisible(false);
+        }else{
+            timeQuantumContainer.setVisible(true);
+            timeQuantumContainer.setVisible(true);
+        }
+    }
+
     private static class SafeDoubleStringConverter extends DoubleStringConverter {
         @Override
         public Double fromString(String value) {
@@ -164,11 +186,16 @@ public class SelectionScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        algoChoice.setValue(algorithmChoices[0]);
+        timeQuantumContainer.setVisible(false);
+        timeQuantumContainer.setVisible(false);
         this.tableIndex = 0;
         tableProcessNumber.setCellValueFactory(new PropertyValueFactory<Process, String>("processNumberDisplay"));
         tableArrivalTime.setCellValueFactory(new PropertyValueFactory<Process, Double>("arrivalTime"));
         tableBurstTime.setCellValueFactory(new PropertyValueFactory<Process, Double>("burstTime"));
 
+        algoChoice.getItems().addAll(algorithmChoices);
+        algoChoice.setOnAction(this::getAlgoChoice);
 
         editDate();
 

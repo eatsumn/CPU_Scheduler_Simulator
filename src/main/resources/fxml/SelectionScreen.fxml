@@ -38,20 +38,20 @@
             <Button fx:id="addProcessButton" mnemonicParsing="false" onAction="#addProcess" prefHeight="32.0" prefWidth="82.0" text="Add Process" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="581.0" layoutY="14.0" prefHeight="58.0" prefWidth="261.0" spacing="15.0">
+      <HBox fx:id="timeQuantumContainer" alignment="CENTER" layoutX="581.0" layoutY="14.0" prefHeight="58.0" prefWidth="261.0" spacing="5.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quantum Time: ">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quantum Time: " wrappingWidth="143.513671875">
                <font>
                   <Font size="20.0" />
                </font>
             </Text>
-            <TextField prefHeight="34.0" prefWidth="71.0" />
+            <TextField prefHeight="34.0" prefWidth="74.0" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" layoutY="542.0" prefHeight="58.0" prefWidth="850.0" spacing="50.0" style="-fx-background-color: Yellow;">
          <children>
             <Button mnemonicParsing="false" onAction="#GoToMenu" prefHeight="40.0" prefWidth="98.0" text="Back To menu" />
-            <ChoiceBox prefHeight="40.0" prefWidth="150.0" />
+            <ChoiceBox fx:id="algoChoice" prefHeight="40.0" prefWidth="150.0" />
          </children>
          <padding>
             <Insets left="15.0" />

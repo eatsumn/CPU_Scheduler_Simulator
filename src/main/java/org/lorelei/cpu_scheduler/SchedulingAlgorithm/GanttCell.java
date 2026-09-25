@@ -9,6 +9,7 @@ public class GanttCell{
     Process process;
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
+    ArrayList<Process> processCompleteList = new ArrayList<Process>();
 
 
     GanttCell(Double startTime, Double completeTime, Process process){
@@ -26,6 +27,30 @@ public class GanttCell{
 
     public void setCompleteTime(Double completeTime) {
         this.completeTime = completeTime;
+    }
+
+    public ArrayList<Process> getProcessWaitList() {
+        return processWaitList;
+    }
+
+    public void setProcessWaitList(ArrayList<Process> processWaitList) {
+        this.processWaitList = processWaitList;
+    }
+
+    public ArrayList<Process> getProcessReadyList() {
+        return processReadyList;
+    }
+
+    public void setProcessReadyList(ArrayList<Process> processReadyList) {
+        this.processReadyList = processReadyList;
+    }
+
+    public ArrayList<Process> getProcessCompleteList() {
+        return processCompleteList;
+    }
+
+    public void setProcessCompleteList(ArrayList<Process> processCompleteList) {
+        this.processCompleteList = processCompleteList;
     }
 
     @Override
