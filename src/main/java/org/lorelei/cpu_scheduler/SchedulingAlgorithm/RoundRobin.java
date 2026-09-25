@@ -18,7 +18,7 @@ public class RoundRobin {
         this.inputProcessList = inputArray;
         this.completeTime = ProcessList.burstTimeTotal(inputArray);
         this.processWaitList = new ArrayList<Process>(inputProcessList);
-        float currentTime = 0;
+        Double currentTime = 0.0;
 
         int temp = 0;
 
@@ -35,7 +35,7 @@ public class RoundRobin {
 
 
             if(processReadyList.isEmpty()){
-                float nextTime = processWaitList.get(ProcessList.lowestAT(processWaitList)).arrivalTime;
+                Double nextTime = processWaitList.get(ProcessList.lowestAT(processWaitList)).arrivalTime;
                 ganttChart.addCell(new GanttCell(currentTime, nextTime));
                 currentTime = nextTime;
                 continue;
@@ -43,7 +43,7 @@ public class RoundRobin {
 
             Process selected = processReadyList.getFirst();
 
-            float computedExecutionTime = Math.min(timeQuantum, selected.burstTime);
+            Double computedExecutionTime = Math.min(timeQuantum, selected.burstTime);
             selected.setBurstTime(selected.burstTime - computedExecutionTime);
 
             ganttChart.addCell(new GanttCell(currentTime, currentTime + computedExecutionTime, new Process(selected.processNumber, selected.arrivalTime, selected.burstTime)));
@@ -70,7 +70,7 @@ public class RoundRobin {
 
 
 
-    ArrayList<Process> checkUnderTime(ArrayList<Process> inputArray, float currentTime) {
+    ArrayList<Process> checkUnderTime(ArrayList<Process> inputArray, Double currentTime) {
         //list down all process under a certain at
         ArrayList<Process> output = new ArrayList<Process>();
         ArrayList<Process> unsorted = new ArrayList<Process>();

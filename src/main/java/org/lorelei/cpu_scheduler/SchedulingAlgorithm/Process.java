@@ -2,26 +2,32 @@ package org.lorelei.cpu_scheduler.SchedulingAlgorithm;
 
 public class Process {
     int processNumber;
-    float arrivalTime;
-    float burstTime;
-    float startTime;
-    float completeTime;
+    String processNumberDisplay;
+    Double arrivalTime;
+    Double burstTime;
+    Double startTime;
+    Double completeTime;
 
-    public Process(int n,float at,float bt){
+    public Process(int n,Double at,Double bt){
         this.processNumber = n;
         this.arrivalTime = at;
         this.burstTime = bt;
+        this.processNumberDisplay ="Process #"+n;
     }
 
-    public float getArrivalTime() {
+    public Double getArrivalTime() {
         return arrivalTime;
     }
 
-    public float getBurstTime() {
+    public Double getBurstTime() {
         return burstTime;
     }
 
-    public void setBurstTime(float burstTime) {
+    public String getProcessNumberDisplay() {
+        return processNumberDisplay;
+    }
+
+    public void setBurstTime(double burstTime) {
         this.burstTime = burstTime;
     }
 

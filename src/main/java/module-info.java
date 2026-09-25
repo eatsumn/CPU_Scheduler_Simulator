@@ -8,4 +8,5 @@ module org.lorelei.cpu_scheduler {
     opens org.lorelei.cpu_scheduler to javafx.fxml;
     exports org.lorelei.cpu_scheduler;
     opens org.lorelei.cpu_scheduler.SceneControllers to javafx.fxml;  // <-- add this
+    opens org.lorelei.cpu_scheduler.SchedulingAlgorithm to javafx.base;
 }

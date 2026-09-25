@@ -4,27 +4,27 @@ import java.util.ArrayList;
 
 public class GanttCell{
     boolean isIdle;
-    float startTime;
-    float completeTime;
+    Double startTime;
+    Double completeTime;
     Process process;
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
 
 
-    GanttCell(float startTime, float completeTime, Process process){
+    GanttCell(Double startTime, Double completeTime, Process process){
         this.startTime = startTime;
         this.completeTime = completeTime;
         this.process = process;
         this.isIdle = false;
     }
 
-    GanttCell(float startTime, float completeTime){
+    GanttCell(Double startTime, Double completeTime){
         this.completeTime = completeTime;
         this.startTime = startTime;
         this.isIdle = true;
     }
 
-    public void setCompleteTime(float completeTime) {
+    public void setCompleteTime(Double completeTime) {
         this.completeTime = completeTime;
     }
 

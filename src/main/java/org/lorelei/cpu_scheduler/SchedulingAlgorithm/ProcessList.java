@@ -8,7 +8,7 @@ public class ProcessList{
 
     public static void highestAT(ArrayList<Process> inputList){
         Iterator<Process> checkList = inputList.iterator();
-        float highestAT = 0;
+        Double highestAT = 0.0;
         int longestAT = 0;
         while (checkList.hasNext()){
             Process current = checkList.next();
@@ -23,7 +23,7 @@ public class ProcessList{
     public static int lowestAT(ArrayList<Process> inputList) {
         //returns the index with the smallest AT
         ListIterator<Process> checkList = inputList.listIterator();
-        float lowestAT = -1;
+        Double lowestAT = -1.0;
         int indexOfSmallest = -1;
         while (checkList.hasNext()) {
             int currentIndex = checkList.nextIndex();

@@ -14,16 +14,16 @@ public class Main {
         processAmount = scan.nextInt();
 
         for (int i = 0; i < processAmount; i++){
-            float tempAT;
-            float tempBT;
+            Double tempAT;
+            Double tempBT;
 
             System.out.printf("\nEnter arrival time for process #%d: ", i + 1);
-            tempAT  = scan.nextFloat();
+            tempAT  = scan.nextDouble();
 
 
 
             System.out.printf("\nEnter burst time for process #%d: ", i + 1);
-            tempBT = scan.nextFloat();
+            tempBT = scan.nextDouble();
 
             processList.add(new Process(i+1,tempAT,tempBT));
         }
