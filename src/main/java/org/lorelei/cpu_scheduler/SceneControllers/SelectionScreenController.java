@@ -53,10 +53,7 @@ public class SelectionScreenController implements Initializable {
         Double inputBT;
 
         if(inputBurstTime.getText().isEmpty() || inputArrivalTime.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Missing Values");
-            alert.setContentText("please fill out the input boxes");
-            alert.show();
+            errorEmptyInput();
             return;
         }
 
@@ -66,18 +63,12 @@ public class SelectionScreenController implements Initializable {
 
 
         } catch (NumberFormatException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Incorrect Values");
-            alert.setContentText("please enter number values");
-            alert.show();
+            errorInvalidInput();
             return;
         }
 
         if(inputAT<0||inputBT<0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Incorrect Values");
-            alert.setContentText("Values must not be negative numbers");
-            alert.show();
+           errorNegativeInput();
             return;
         }
 
@@ -97,20 +88,43 @@ public class SelectionScreenController implements Initializable {
 
     }
 
+    private void errorEmptyInput(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Missing Values");
+        alert.setContentText("please fill out the input boxes");
+        alert.show();
+    }
+
+    private void errorInvalidInput(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Incorrect Values");
+        alert.setContentText("please enter number values");
+        alert.show();
+    }
+    private void errorNegativeInput(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Incorrect Values");
+        alert.setContentText("please enter non-negative numbers");
+        alert.show();
+    }
 
 
-    private void editDate(){
-        tableArrivalTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new DoubleStringConverter()));
+    private void editDate()  {
+
+        tableArrivalTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new SafeDoubleStringConverter()));
         tableArrivalTime.setOnEditCommit(event ->{
             Process process = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
 
+            if(event.getNewValue()==null) {
+                errorEmptyInput();
+                event.getTableView().refresh();
+                return;
+            }
 
             if(event.getNewValue()<0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Incorrect Values");
-                alert.setContentText("Values must not be negative numbers");
-                alert.show();
+                errorNegativeInput();
+                event.getTableView().refresh();
                 return;
             }
 
@@ -119,7 +133,7 @@ public class SelectionScreenController implements Initializable {
 
         });
 
-        tableBurstTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new DoubleStringConverter()));
+        tableBurstTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new SafeDoubleStringConverter()));
         tableBurstTime.setOnEditCommit(event ->{
             Process process = event.getTableView().getItems().get(event.getTablePosition().getRow());
             process.setBurstTime(event.getNewValue());
@@ -135,6 +149,17 @@ public class SelectionScreenController implements Initializable {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    private static class SafeDoubleStringConverter extends DoubleStringConverter {
+        @Override
+        public Double fromString(String value) {
+            try {
+                return super.fromString(value);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
     }
 
     @Override
