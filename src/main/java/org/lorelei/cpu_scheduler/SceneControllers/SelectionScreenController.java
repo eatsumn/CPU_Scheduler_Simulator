@@ -9,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
+import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 
 import java.io.IOException;
@@ -95,6 +97,37 @@ public class SelectionScreenController implements Initializable {
 
     }
 
+
+
+    private void editDate(){
+        tableArrivalTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new DoubleStringConverter()));
+        tableArrivalTime.setOnEditCommit(event ->{
+            Process process = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+
+
+            if(event.getNewValue()<0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Incorrect Values");
+                alert.setContentText("Values must not be negative numbers");
+                alert.show();
+                return;
+            }
+
+            process.setArrivalTime(event.getNewValue());
+
+
+        });
+
+        tableBurstTime.setCellFactory(TextFieldTableCell.<Process, Double>forTableColumn(new DoubleStringConverter()));
+        tableBurstTime.setOnEditCommit(event ->{
+            Process process = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            process.setBurstTime(event.getNewValue());
+            System.out.println(process.getProcessNumberDisplay());
+        });
+
+    }
+
     public void GoToMenu(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("/fxml/MenuScreen.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -112,7 +145,7 @@ public class SelectionScreenController implements Initializable {
         tableBurstTime.setCellValueFactory(new PropertyValueFactory<Process, Double>("burstTime"));
 
 
-
+        editDate();
 
     }
 }

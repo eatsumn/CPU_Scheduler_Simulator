@@ -21,7 +21,7 @@
             <Image url="@../images/select_charac.png" />
          </image>
       </ImageView>
-      <TableView fx:id="processTable" layoutX="14.0" layoutY="93.0" prefHeight="397.0" prefWidth="567.0">
+      <TableView fx:id="processTable" editable="true" layoutX="14.0" layoutY="93.0" prefHeight="397.0" prefWidth="567.0">
         <columns>
           <TableColumn fx:id="tableProcessNumber" prefWidth="97.0" sortable="false" text="Process Number" />
           <TableColumn fx:id="tableArrivalTime" prefWidth="94.0" sortable="false" text="Arrival Time" />

@@ -27,6 +27,14 @@ public class Process {
         return processNumberDisplay;
     }
 
+    public void setArrivalTime(Double arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public void setProcessNumberDisplay(String processNumberDisplay) {
+        this.processNumberDisplay = processNumberDisplay;
+    }
+
     public void setBurstTime(double burstTime) {
         this.burstTime = burstTime;
     }
