@@ -5,14 +5,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /** First Come First Serve scheduling; ties retain input order. */
-public class FCFS implements algorithm {
-    private final GanttChart ganttChart = new GanttChart();
-    private final List<Process> results = new ArrayList<>();
-    private double averageWaitingTime;
-    private double averageTurnaroundTime;
+public class FCFS extends Algorithm {
+    private final ArrayList<Process> results = new ArrayList<>();
+
 
     public FCFS(List<Process> input) {
-        List<Process> ordered = new ArrayList<>(input);
+        ArrayList<Process> ordered = new ArrayList<>(input);
         ordered.sort(Comparator.comparingDouble(Process::getArrivalTime));
         double time = 0, totalWaiting = 0, totalTurnaround = 0;
         for (Process source : ordered) {
@@ -34,8 +32,6 @@ public class FCFS implements algorithm {
             averageTurnaroundTime = totalTurnaround / results.size();
         }
     }
-    @Override public GanttChart getGanttChart() { return ganttChart; }
     public List<Process> getResults() { return results; }
-    public double getAverageWaitingTime() { return averageWaitingTime; }
-    public double getAverageTurnaroundTime() { return averageTurnaroundTime; }
+
 }

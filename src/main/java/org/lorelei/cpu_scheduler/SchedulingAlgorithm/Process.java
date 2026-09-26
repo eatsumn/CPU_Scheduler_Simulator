@@ -21,8 +21,6 @@ public class Process {
 
     public Double getBurstTime() { return burstTime; }
     public int getProcessNumber() { return processNumber; }
-    public Double getStartTime() { return startTime; }
-    public Double getCompleteTime() { return completeTime; }
     public Double getWaitingTime() { return startTime == null ? 0 : startTime - arrivalTime; }
     public Double getTurnaroundTime() { return completeTime == null ? 0 : completeTime - arrivalTime; }
 

@@ -2,14 +2,14 @@ package org.lorelei.cpu_scheduler.SchedulingAlgorithm;
 
 import java.util.ArrayList;
 
-public class RoundRobin implements algorithm {
+public class RoundRobin extends Algorithm {
     ArrayList<Process> inputProcessList = new ArrayList<Process>();
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
     ArrayList<Process> processCompletedList = new ArrayList<Process>();
     private double averageWaitingTime;
     private double averageTurnaroundTime;
-    GanttChart ganttChart = new GanttChart();
+
     float completeTime;
 
     public RoundRobin(ArrayList<Process> inputArray, double timeQuantum){
@@ -57,6 +57,19 @@ public class RoundRobin implements algorithm {
 
             temp++;
         }
+
+
+        double totalWaitingTime = 0;
+        double totalTurnAroundTime = 0;
+
+        for(Process i: processCompletedList){
+            totalWaitingTime += i.getWaitingTime();
+            totalTurnAroundTime += i.getTurnaroundTime();
+        }
+
+        averageTurnaroundTime = totalTurnAroundTime/(processCompletedList.toArray().length);
+        averageWaitingTime = totalWaitingTime/(processCompletedList.toArray().length);
+
         System.out.println("\nFINAL: " +ganttChart);
         System.out.println("\nCompleted List: " + ganttChart.getLastCell().getProcessCompleteList());
     }
@@ -85,8 +98,6 @@ public class RoundRobin implements algorithm {
     }
 
 
-    @Override
-    public GanttChart getGanttChart() {
-        return ganttChart;
-    }
+
+
 }

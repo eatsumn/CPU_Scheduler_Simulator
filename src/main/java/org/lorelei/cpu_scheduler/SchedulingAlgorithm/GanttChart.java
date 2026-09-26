@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class GanttChart {
     ArrayList<GanttCell> chart = new ArrayList<GanttCell>();
 
+
     public void addCell(GanttCell cell){
         chart.add(cell);
         cell.setIndex_ID(chart.indexOf(cell)); //fuck
@@ -22,6 +23,15 @@ public class GanttChart {
 
     public GanttCell getChart(int index) {
         return chart.get(index);
+    }
+
+    public ArrayList<Process> getGanttChartProcess(){
+        ArrayList<Process> outputProcesses = new ArrayList<Process>();
+        for(GanttCell i: chart){
+            outputProcesses.add(i.getProcess());
+            System.out.println("NIGGGGAAAAA" + i.getProcess());
+        }
+        return outputProcesses;
     }
 
     public ArrayList<GanttCell> getChart() {

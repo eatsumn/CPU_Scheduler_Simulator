@@ -17,11 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.FCFS;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.GanttCell;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.GanttChart;
+import org.lorelei.cpu_scheduler.SchedulingAlgorithm.*;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.RoundRobin;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,17 +33,12 @@ public class OutputScreenController implements Initializable {
     @FXML private TableColumn<Process, String> processColumn;
     @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, completionColumn, waitingColumn, turnaroundColumn;
 
-    private GanttChart ganttChartModel = new GanttChart();
     private RoundRobin roundRobin;
     private Double quantumTime;
     private String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
     private String selectedAlgorithm;
     private ArrayList<Process> inputTable = new ArrayList<>();
 
-    @FXML private VBox completedList;
-    @FXML private HBox ganntChartVisualizer;
-    @FXML private VBox readyListColumn;
-    @FXML private VBox waitListColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,8 +50,9 @@ public class OutputScreenController implements Initializable {
         turnaroundColumn.setCellValueFactory(new PropertyValueFactory<>("turnaroundTime"));
     }
 
-    public void setResult(FCFS result) {
-        resultsTable.getItems().setAll(result.getResults());
+    public void setResult(Algorithm result) {
+        System.out.println(result.getGanttChart().getGanttChartProcess());
+        resultsTable.getItems().setAll(result.getGanttChart().getGanttChartProcess());
         averageWT.setText("Average WT: " + format(result.getAverageWaitingTime()));
         averageTAT.setText("Average TAT: " + format(result.getAverageTurnaroundTime()));
         var cells = result.getGanttChart().getChart();
@@ -116,10 +109,14 @@ public class OutputScreenController implements Initializable {
         System.out.println("Selected Algo: " + selectedAlgorithm);
 
         if (Objects.equals(selectedAlgorithm, algorithmChoices[0])) {
-
+            System.out.println(inputTable);
+            FCFS fcfs = new FCFS(inputTable);
+            setResult(fcfs);
+            System.out.println(fcfs.getGanttChart());
         } else if (Objects.equals(selectedAlgorithm, algorithmChoices[2])) {
-            roundRobin = new RoundRobin(inputTable, quantumTime == null ? 0 : quantumTime);
+            roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
+            setResult(roundRobin);
         }
     }
 

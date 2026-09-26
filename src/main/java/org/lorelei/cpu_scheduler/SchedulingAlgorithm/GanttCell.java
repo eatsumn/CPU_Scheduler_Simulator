@@ -30,6 +30,7 @@ public class GanttCell{
     public Double getCompleteTime() { return completeTime; }
     public Process getProcess() { return process; }
 
+
     public void setCompleteTime(Double completeTime) {
         this.completeTime = completeTime;
     }
