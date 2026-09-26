@@ -7,17 +7,25 @@ public class RoundRobin extends Algorithm {
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
     ArrayList<Process> processCompletedList = new ArrayList<Process>();
-    private double averageWaitingTime;
-    private double averageTurnaroundTime;
+
 
     float completeTime;
 
     public RoundRobin(ArrayList<Process> inputArray, double timeQuantum){
-        this.inputProcessList = inputArray;
+        this.inputProcessList = new ArrayList<Process>(inputArray);
         this.completeTime = ProcessList.burstTimeTotal(inputArray);
         this.processWaitList = new ArrayList<Process>(inputProcessList);
+        ArrayList<Process> inputArrayListInitial = new ArrayList<Process>();
+
+
+        for(Process i: inputProcessList){
+            inputArrayListInitial.add(new Process(i));
+        }
+
         Double currentTime = 0.0;
         int temp = 0;
+
+        System.out.println("INPUT ARRAY: " + inputArrayListInitial);
 
         while(!processReadyList.isEmpty()||!processWaitList.isEmpty()){
             ArrayList<Process> tempSelected = new ArrayList<Process>(checkUnderTime(processWaitList, currentTime));
@@ -33,11 +41,14 @@ public class RoundRobin extends Algorithm {
 
             Process selected = processReadyList.getFirst();
 
+
             Double computedExecutionTime = Math.min(timeQuantum, selected.burstTime);
             selected.setBurstTime(selected.burstTime - computedExecutionTime);
             Process tempProcess = new Process(selected.processNumber, selected.arrivalTime, selected.burstTime);
             tempProcess.startTime = currentTime;
+            Double startTimeHold = currentTime;
             tempProcess.completeTime = currentTime + computedExecutionTime;
+            Double completeTimeHold = currentTime + computedExecutionTime;
             GanttCell tempGanttCell = new GanttCell(currentTime, currentTime + computedExecutionTime, tempProcess);
             ganttChart.addCell(tempGanttCell);
 
@@ -47,7 +58,19 @@ public class RoundRobin extends Algorithm {
 
             processReadyList.addAll(tempSelected);
             if(selected.burstTime > 0) processReadyList.add(processReadyList.getFirst());
-            if(selected.burstTime == 0) processCompletedList.add(tempProcess);
+            if(selected.burstTime == 0){
+                for(Process i: inputArrayListInitial){
+                    if(i.processNumber==selected.processNumber) {
+                        Process placeHolderProcess = new Process(tempProcess.processNumber, tempProcess.arrivalTime, i.burstTime);
+                        placeHolderProcess.startTime = tempProcess.startTime;
+                        placeHolderProcess.completeTime = completeTimeHold;
+                        placeHolderProcess.waitingTime = placeHolderProcess.getTurnaroundTime() - placeHolderProcess.getBurstTime();
+                        processCompletedList.add(placeHolderProcess);
+                        System.out.println("LETCHE");
+                    }
+                }
+
+            }
             processReadyList.removeFirst();
             processWaitList.removeAll(tempSelected);
 
@@ -55,8 +78,12 @@ public class RoundRobin extends Algorithm {
             ganttChart.setLastListData(processWaitList,processReadyList, processCompletedList);
 
 
+
             temp++;
         }
+
+
+        ganttChart.setResult(processCompletedList);
 
 
         double totalWaitingTime = 0;
@@ -72,6 +99,9 @@ public class RoundRobin extends Algorithm {
 
         System.out.println("\nFINAL: " +ganttChart);
         System.out.println("\nCompleted List: " + ganttChart.getLastCell().getProcessCompleteList());
+
+        System.out.println("INPUT ARRAY: " + inputArrayListInitial);
+
     }
 
 

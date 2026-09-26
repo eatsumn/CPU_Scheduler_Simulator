@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class GanttChart {
     ArrayList<GanttCell> chart = new ArrayList<GanttCell>();
+    ArrayList<Process> result = new ArrayList<Process>();
 
 
     public void addCell(GanttCell cell){
@@ -25,11 +26,18 @@ public class GanttChart {
         return chart.get(index);
     }
 
+    public ArrayList<Process> getResult() {
+        return result;
+    }
+
+    public void setResult(ArrayList<Process> result) {
+        this.result = result;
+    }
+
     public ArrayList<Process> getGanttChartProcess(){
         ArrayList<Process> outputProcesses = new ArrayList<Process>();
         for(GanttCell i: chart){
             outputProcesses.add(i.getProcess());
-            System.out.println("NIGGGGAAAAA" + i.getProcess());
         }
         return outputProcesses;
     }

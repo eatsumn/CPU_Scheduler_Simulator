@@ -7,6 +7,7 @@ public class Process {
     Double burstTime;
     Double startTime;
     Double completeTime;
+    Double waitingTime;
 
     public Process(int n,Double at,Double bt){
         this.processNumber = n;
@@ -15,13 +16,41 @@ public class Process {
         this.processNumberDisplay ="Process #"+n;
     }
 
+    public Process(Double startTime,Double completeTime){
+        this.arrivalTime = startTime;
+        this.burstTime = completeTime;
+        this.processNumberDisplay ="idle";
+    }
+
+    public Process(Process other) {
+        this.processNumber = other.processNumber;
+        this.arrivalTime = other.arrivalTime;
+        this.burstTime = other.burstTime;
+    }
+
     public Double getArrivalTime() {
         return arrivalTime;
     }
 
+    public void setCompleteTime(Double completeTime) {
+        this.completeTime = completeTime;
+    }
+
+    public Double getCompleteTime() {
+        return completeTime;
+    }
+
+    public Double getStartTime() {
+        return startTime;
+    }
+
+    public void setWaitingTime(Double waitingTime) {
+        this.waitingTime = waitingTime;
+    }
+
     public Double getBurstTime() { return burstTime; }
     public int getProcessNumber() { return processNumber; }
-    public Double getWaitingTime() { return startTime == null ? 0 : startTime - arrivalTime; }
+    public Double getWaitingTime() { return waitingTime; }
     public Double getTurnaroundTime() { return completeTime == null ? 0 : completeTime - arrivalTime; }
 
     public String getProcessNumberDisplay() {

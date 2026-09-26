@@ -31,7 +31,7 @@ public class OutputScreenController implements Initializable {
     @FXML private TableView<Process> resultsTable;
     @FXML private Label averageWT, averageTAT;
     @FXML private TableColumn<Process, String> processColumn;
-    @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, completionColumn, waitingColumn, turnaroundColumn;
+    @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, startColumn,completionColumn, waitingColumn, turnaroundColumn;
 
     private RoundRobin roundRobin;
     private Double quantumTime;
@@ -45,6 +45,7 @@ public class OutputScreenController implements Initializable {
         processColumn.setCellValueFactory(new PropertyValueFactory<>("processNumberDisplay"));
         arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         burstColumn.setCellValueFactory(new PropertyValueFactory<>("burstTime"));
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
         completionColumn.setCellValueFactory(new PropertyValueFactory<>("completeTime"));
         waitingColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTime"));
         turnaroundColumn.setCellValueFactory(new PropertyValueFactory<>("turnaroundTime"));
@@ -52,7 +53,8 @@ public class OutputScreenController implements Initializable {
 
     public void setResult(Algorithm result) {
         System.out.println(result.getGanttChart().getGanttChartProcess());
-        resultsTable.getItems().setAll(result.getGanttChart().getGanttChartProcess());
+       // resultsTable.getItems().setAll(result.getResults());
+        resultsTable.getItems().setAll(result.getGanttChart().getResult());
         averageWT.setText("Average WT: " + format(result.getAverageWaitingTime()));
         averageTAT.setText("Average TAT: " + format(result.getAverageTurnaroundTime()));
         var cells = result.getGanttChart().getChart();

@@ -16,12 +16,15 @@ public class GanttCell{
         this.startTime = startTime;
         this.completeTime = completeTime;
         this.process = process;
+        this.process.setCompleteTime(this.completeTime);
+        System.out.println("CHECKKKKKKKKKKKKKKK MMEMEEEEEEEEEEE OOOOOUUUUUUUUUUTTTTT:     " + this.process.getCompleteTime());
         this.isIdle = false;
     }
 
     GanttCell(Double startTime, Double completeTime) {
         this.completeTime = completeTime;
         this.startTime = startTime;
+        this.process = new Process(startTime, completeTime);
         this.isIdle = true;
     }
 
@@ -29,6 +32,7 @@ public class GanttCell{
     public Double getStartTime() { return startTime; }
     public Double getCompleteTime() { return completeTime; }
     public Process getProcess() { return process; }
+
 
 
     public void setCompleteTime(Double completeTime) {

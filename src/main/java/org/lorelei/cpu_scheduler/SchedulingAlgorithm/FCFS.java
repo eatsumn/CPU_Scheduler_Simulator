@@ -6,7 +6,6 @@ import java.util.List;
 
 /** First Come First Serve scheduling; ties retain input order. */
 public class FCFS extends Algorithm {
-    private final ArrayList<Process> results = new ArrayList<>();
 
 
     public FCFS(List<Process> input) {
@@ -22,7 +21,8 @@ public class FCFS extends Algorithm {
             process.startTime = time;
             time += process.getBurstTime();
             process.completeTime = time;
-            totalWaiting += process.getWaitingTime();
+            process.setWaitingTime(process.startTime == null ? 0 : process.startTime - process.arrivalTime);
+            totalWaiting +=  process.waitingTime;
             totalTurnaround += process.getTurnaroundTime();
             results.add(process);
             ganttChart.addCell(new GanttCell(process.startTime, process.completeTime, process));
@@ -31,7 +31,7 @@ public class FCFS extends Algorithm {
             averageWaitingTime = totalWaiting / results.size();
             averageTurnaroundTime = totalTurnaround / results.size();
         }
+        ganttChart.setResult(results);
     }
-    public List<Process> getResults() { return results; }
 
 }
