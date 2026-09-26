@@ -19,9 +19,12 @@ public class Process {
         return arrivalTime;
     }
 
-    public Double getBurstTime() {
-        return burstTime;
-    }
+    public Double getBurstTime() { return burstTime; }
+    public int getProcessNumber() { return processNumber; }
+    public Double getStartTime() { return startTime; }
+    public Double getCompleteTime() { return completeTime; }
+    public Double getWaitingTime() { return startTime == null ? 0 : startTime - arrivalTime; }
+    public Double getTurnaroundTime() { return completeTime == null ? 0 : completeTime - arrivalTime; }
 
     public String getProcessNumberDisplay() {
         return processNumberDisplay;
@@ -41,8 +44,13 @@ public class Process {
 
     @Override
     public String toString() {
-        return "\nProcess #" + processNumber +
+        return "Process #" + processNumber +
                 " |AT: " + arrivalTime +
-                " |BT: " + burstTime;
+                " |BT: " + burstTime +
+                " |ST: " + startTime +
+                " |CT: " + completeTime+
+                " | WT: " + getWaitingTime() +
+                " | TAT: " + getTurnaroundTime()
+                + " [------] ";
     }
 }

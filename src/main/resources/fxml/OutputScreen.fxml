@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lorelei.cpu_scheduler.SceneControllers.OutputScreenController">
+ <children>
+  <VBox spacing="9" AnchorPane.bottomAnchor="72" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="18">
    <children>
-      <ScrollPane fitToHeight="true" layoutX="20.0" layoutY="510.0" prefHeight="70.0" prefWidth="810.0" style="-fx-background-color: green; -fx-border-color: orange;" vbarPolicy="NEVER">
-         <content>
-            <HBox fx:id="ganntChartVisualizer" prefHeight="48.0" style="-fx-border-width: 5; -fx-background-color: #bc86cccc;">
-               <children>
-                  <TilePane alignment="CENTER" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: yellow; -fx-border-color: blue;">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="P1" />
-                     </children>
-                  </TilePane>
-               </children>
-            </HBox>
-         </content>
-      </ScrollPane>
+    <Label text="FCFS Scheduling Results"><font><Font name="System Bold" size="24"/></font></Label>
+    <Label text="Gantt Chart" style="-fx-font-size: 17px; -fx-font-weight: bold;"/>
+    <ScrollPane fitToHeight="false" fitToWidth="false" minHeight="120" prefHeight="120" maxHeight="120" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;">
+     <content>
+      <Pane fx:id="ganttChart" minHeight="112" prefHeight="112" prefWidth="650" style="-fx-background-color: #f1f3f5; -fx-background-radius: 24;"/>
+     </content>
+    </ScrollPane>
+    <Label text="Process calculations" style="-fx-font-size: 17px; -fx-font-weight: bold;"/>
+    <TableView fx:id="resultsTable" minHeight="120" prefHeight="210">
+     <columns>
+      <TableColumn fx:id="processColumn" text="Process" prefWidth="130"/>
+      <TableColumn fx:id="arrivalColumn" text="AT" prefWidth="100"/>
+      <TableColumn fx:id="burstColumn" text="BT" prefWidth="100"/>
+      <TableColumn fx:id="completionColumn" text="CT" prefWidth="100"/>
+      <TableColumn fx:id="waitingColumn" text="WT" prefWidth="100"/>
+      <TableColumn fx:id="turnaroundColumn" text="TAT" prefWidth="100"/>
+     </columns>
+    </TableView>
+    <HBox alignment="CENTER_RIGHT" spacing="28">
+     <children>
+      <Label fx:id="averageWT" text="Average WT:"/>
+      <Label fx:id="averageTAT" text="Average TAT:"/>
+     </children>
+    </HBox>
    </children>
+   <padding><Insets bottom="5" left="5" right="5" top="5"/></padding>
+  </VBox>
+  <HBox alignment="CENTER_LEFT" layoutX="0.0" layoutY="542.0" prefHeight="58.0" prefWidth="850.0" spacing="50.0" style="-fx-background-color: Yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+   <children>
+    <Button mnemonicParsing="false" onAction="#backToMenu" prefHeight="40.0" prefWidth="120.0" text="Back To Menu"/>
+    <Button mnemonicParsing="false" onAction="#newCalculation" prefHeight="40.0" prefWidth="160.0" text="Another Calculation"/>
+   </children>
+   <padding><Insets left="15.0"/></padding>
+  </HBox>
+ </children>
 </AnchorPane>

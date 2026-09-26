@@ -7,23 +7,28 @@ public class GanttCell{
     Double startTime;
     Double completeTime;
     Process process;
+    int index_ID;
     ArrayList<Process> processWaitList = new ArrayList<Process>();
     ArrayList<Process> processReadyList = new ArrayList<Process>();
     ArrayList<Process> processCompleteList = new ArrayList<Process>();
 
-
-    GanttCell(Double startTime, Double completeTime, Process process){
+    GanttCell(Double startTime, Double completeTime, Process process) {
         this.startTime = startTime;
         this.completeTime = completeTime;
         this.process = process;
         this.isIdle = false;
     }
 
-    GanttCell(Double startTime, Double completeTime){
+    GanttCell(Double startTime, Double completeTime) {
         this.completeTime = completeTime;
         this.startTime = startTime;
         this.isIdle = true;
     }
+
+    public boolean isIdle() { return isIdle; }
+    public Double getStartTime() { return startTime; }
+    public Double getCompleteTime() { return completeTime; }
+    public Process getProcess() { return process; }
 
     public void setCompleteTime(Double completeTime) {
         this.completeTime = completeTime;
@@ -53,15 +58,23 @@ public class GanttCell{
         this.processCompleteList = processCompleteList;
     }
 
+    public int getIndex_ID() {
+        return index_ID;
+    }
+
+    public void setIndex_ID(int index_ID) {
+        this.index_ID = index_ID;
+    }
+
     @Override
     public String toString() {
-        String holder = "||||||||||||||||||";
-        if(!isIdle){
+        String holder = "\n";
+        if (!isIdle) {
             holder += process;
-        }else{
+        } else {
             holder += "IDLE";
         }
-        holder +=  " | TAIL: " + startTime + " | HEAD: " + completeTime + "\n - - - - - Wait List: " + getProcessWaitList() + "\n - - - - - Ready List: " + getProcessReadyList() + "\n - - - - - Complete List: " + getProcessCompleteList() + "\n";
+        holder += " | TAIL: " + startTime + " | HEAD: " + completeTime + " index_caller: " + index_ID + "\n";
         return holder;
     }
 }

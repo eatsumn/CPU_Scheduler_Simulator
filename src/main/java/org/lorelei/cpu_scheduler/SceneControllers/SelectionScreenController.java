@@ -15,12 +15,13 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.ProcessList;
+import org.lorelei.cpu_scheduler.SchedulingAlgorithm.FCFS;
+
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SelectionScreenController implements Initializable {
@@ -33,14 +34,20 @@ public class SelectionScreenController implements Initializable {
 
     String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
 
+
     @FXML
     private Button addProcessButton;
+
+    @FXML private Button simulateButton;
 
     @FXML
     private Button clearListButton;
 
     @FXML
     private Button addRandomButton;
+
+    @FXML
+    private TextField quantumTimeInput;
 
     @FXML
     private TextField inputArrivalTime;
@@ -88,8 +95,10 @@ public class SelectionScreenController implements Initializable {
 
     @FXML
     void RemoveLastProcess(ActionEvent event) {
-        if(!processTable.getItems().isEmpty()) processTable.getItems().removeLast();
-        tableIndex--;
+        if(!processTable.getItems().isEmpty()){
+            processTable.getItems().removeLast();
+            tableIndex--;
+        }
     }
 
     @FXML
@@ -98,7 +107,7 @@ public class SelectionScreenController implements Initializable {
         Double inputBT;
 
         if(inputBurstTime.getText().isEmpty() || inputArrivalTime.getText().isEmpty()) {
-            errorEmptyInput();
+            errorEmptyInput("Process");
             return;
         }
 
@@ -108,12 +117,12 @@ public class SelectionScreenController implements Initializable {
 
 
         } catch (NumberFormatException e){
-            errorInvalidInput();
+            errorInvalidInput("Process");
             return;
         }
 
         if(inputAT<0||inputBT<0) {
-           errorNegativeInput();
+           errorNegativeInput("Process");
             return;
         }
 
@@ -126,29 +135,26 @@ public class SelectionScreenController implements Initializable {
         inputBurstTime.clear();
 
 
-
-
-
-
-
     }
 
-    private void errorEmptyInput(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("Missing Values");
+    Alert alert;
+
+    private void errorEmptyInput(String s){
+        alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Missing Values at " + s);
         alert.setContentText("please fill out the input boxes");
         alert.show();
     }
 
-    private void errorInvalidInput(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("Incorrect Values");
+    private void errorInvalidInput(String s){
+        alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Incorrect Value at " + s);
         alert.setContentText("please enter number values");
         alert.show();
     }
-    private void errorNegativeInput(){
+    private void errorNegativeInput(String s){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("Incorrect Values");
+        alert.setHeaderText("Incorrect Values  at " + s);
         alert.setContentText("please enter non-negative numbers");
         alert.show();
     }
@@ -162,13 +168,13 @@ public class SelectionScreenController implements Initializable {
 
 
             if(event.getNewValue()==null) {
-                errorEmptyInput();
+                errorEmptyInput("Table");
                 event.getTableView().refresh();
                 return;
             }
 
             if(event.getNewValue()<0) {
-                errorNegativeInput();
+                errorNegativeInput("Table");
                 event.getTableView().refresh();
                 return;
             }
@@ -196,6 +202,65 @@ public class SelectionScreenController implements Initializable {
 
     }
 
+    @FXML
+    private void simulate(ActionEvent event) throws IOException {
+        if (processTable.getItems().isEmpty()) {
+            errorEmptyInput("Process");
+            return;
+        }
+        if (!"First Come First Serve".equals(algoChoice.getValue())) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Algorithm not available yet");
+            alert.setContentText("Choose First Come First Serve to view its results.");
+            alert.show();
+            return;
+        }
+        FCFS result = new FCFS(processTable.getItems());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OutputScreen.fxml"));
+        root = loader.load();
+        loader.<OutputScreenController>getController().setResult(result);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    void goToStart(ActionEvent event) throws IOException {
+        ArrayList<Process> inputTable = new ArrayList<Process>(processTable.getItems());
+        if (inputTable.isEmpty()) {
+            errorEmptyInput("Empty List");
+            return;
+        }
+
+        if ("Round Robin".equals(choice) && quantumTimeInputError()) {
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OutputScreen.fxml"));
+        root = loader.load();
+        OutputScreenController outputScreenController = loader.getController();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Start Algorithm");
+        alert.setContentText("Start?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isEmpty() || result.get() == ButtonType.CANCEL) {
+            return;
+        }
+
+        if ("Round Robin".equals(choice)) {
+            double inputQuantumTime = Double.parseDouble(quantumTimeInput.getText());
+            outputScreenController.submitTable(inputTable, choice, inputQuantumTime);
+        } else {
+            outputScreenController.submitTable(inputTable, choice);
+        }
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void getAlgoChoice(ActionEvent event){
         choice = algoChoice.getValue();
 
@@ -219,9 +284,37 @@ public class SelectionScreenController implements Initializable {
         }
     }
 
+
+    Boolean quantumTimeInputError() {
+       double inputQT;
+        if(quantumTimeInput.getText().isEmpty()) {
+            errorEmptyInput("Quantum Time");
+            return true;
+        }
+
+        try {
+            inputQT = Double.parseDouble(quantumTimeInput.getText());
+
+
+        } catch (NumberFormatException e){
+            errorInvalidInput("Quantum Time");
+            return true;
+        }
+
+        if(inputQT<0) {
+            errorNegativeInput("Quantum Time");
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         algoChoice.setValue(algorithmChoices[0]);
+        choice = algorithmChoices[0];
+
         timeQuantumContainer.setVisible(false);
         timeQuantumContainer.setVisible(false);
         this.tableIndex = 0;
@@ -232,7 +325,11 @@ public class SelectionScreenController implements Initializable {
         algoChoice.getItems().addAll(algorithmChoices);
         algoChoice.setOnAction(this::getAlgoChoice);
 
-        editDate();
+
+
+
+
+        editDate(); //back
 
     }
 }
