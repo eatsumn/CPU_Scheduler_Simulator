@@ -18,12 +18,11 @@ public class MenuController {
 
 
     public void GoToSelection(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/fxml/SelectionScreen.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        SceneManager.navigate(event,"/fxml/SelectionScreen.fxml", this);
+    }
 
+    public void GoToSettings(ActionEvent event) throws IOException {
+        SceneManager.navigate(event,"/fxml/SettingsMenu.fxml", this);
     }
 
 

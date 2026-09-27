@@ -18,7 +18,10 @@ public class RandomNext extends Algorithm{
             ArrayList<Process> checked = ProcessList.checkUnderTime(processWaitList, currentTime);
 
             if(checked.isEmpty()){
-                selected = processWaitList.remove(random.nextInt(0, processWaitList.size()));
+                Double nextTime = processWaitList.get(ProcessList.lowestAT(processWaitList)).arrivalTime;
+                ganttChart.addCell(new GanttCell(currentTime, nextTime));
+                currentTime = nextTime;
+                continue;
             }else{
                 Process randomSelected = checked.get(random.nextInt(0, checked.size()));
                 selected = randomSelected;

@@ -133,7 +133,7 @@ public class OutputScreenController implements Initializable {
     }
 
     @FXML private void backToMenu(ActionEvent event) throws IOException {
-        navigate(event, "/fxml/MenuScreen.fxml");
+        SceneManager.navigate(event, "/fxml/MenuScreen.fxml", this);
     }
 
     @FXML private void newCalculation(ActionEvent event) throws IOException {
@@ -146,12 +146,6 @@ public class OutputScreenController implements Initializable {
         stage.show();
     }
 
-    private void navigate(ActionEvent event, String resource) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(resource));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
 
     private String format(double value) {
         return value == Math.rint(value) ? String.valueOf((long) value) : String.format(java.util.Locale.ROOT, "%.2f", value);

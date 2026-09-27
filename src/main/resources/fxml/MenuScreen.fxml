@@ -19,7 +19,7 @@
       <VBox alignment="CENTER" layoutX="29.0" layoutY="234.0" prefHeight="319.0" prefWidth="364.0" spacing="20.0">
          <children>
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#GoToSelection" prefHeight="84.0" prefWidth="260.0" text="Start" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="82.0" prefWidth="260.0" text="Settings" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#GoToSettings" prefHeight="82.0" prefWidth="260.0" text="Settings" />
             <Button focusTraversable="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="260.0" text="Exit" />
          </children>
       </VBox>

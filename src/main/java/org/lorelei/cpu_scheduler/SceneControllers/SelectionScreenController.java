@@ -81,8 +81,19 @@ public class SelectionScreenController implements Initializable {
         if(highAT<=1) highAT = Math.random() * 10;
         if(highBT<=1) highBT = Math.random() * 10;
 
-        Process newProcess = new Process(++tableIndex, (Math.ceil(Math.random() * (highAT + Math.random() * 5))), (Math.ceil(Math.random() * (highBT + Math.random() * 5))));
+        double ranAt = ((Math.random() * (highAT + Math.random() * 5)));
+        double ranBt = ((Math.random() * (highBT + Math.random() * 5)));
+
+        Process newProcess = new Process(++tableIndex, randomSettingsReturn(ranAt), randomSettingsReturn(ranBt));
         processTable.getItems().add(newProcess);
+    }
+
+    private double randomSettingsReturn(double a){
+        if(Settings.randomFloat){
+            return Math.round(a * Settings.randomDecimalPlace) / (double)Settings.randomDecimalPlace;
+        }else {
+            return (Math.random()*2==1) ? Math.ceil(a) : Math.floor(a);
+        }
     }
 
     @FXML
@@ -192,11 +203,7 @@ public class SelectionScreenController implements Initializable {
     }
 
     public void GoToMenu(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/fxml/MenuScreen.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        SceneManager.navigate(event,"/fxml/MenuScreen.fxml", this);
 
     }
 
