@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.*;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
+import org.lorelei.cpu_scheduler.Settings;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +35,6 @@ public class OutputScreenController implements Initializable {
     @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, startColumn,completionColumn, waitingColumn, turnaroundColumn;
 
     private Double quantumTime;
-    private final String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin", "Random Next"};
     private String selectedAlgorithm;
     private ArrayList<Process> inputTable = new ArrayList<>();
 
@@ -116,22 +116,20 @@ public class OutputScreenController implements Initializable {
         System.out.println("QUANTUM TIME: " + quantumTime);
         System.out.println("Selected Algo: " + selectedAlgorithm);
 
-        if (Objects.equals(selectedAlgorithm, algorithmChoices[0])) {
-            algorithmLabel.setText(algorithmChoices[0] + " Results");
+        if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[0])) {
             System.out.println(inputTable);
             FirstComeFirstServed firstComeFirstServed = new FirstComeFirstServed(inputTable);
             setResult(firstComeFirstServed);
-        } else if (Objects.equals(selectedAlgorithm, algorithmChoices[2])) {
-            algorithmLabel.setText(algorithmChoices[2] + " Results");
+        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[2])) {
             RoundRobin roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
             setResult(roundRobin);
-        } else if (Objects.equals(selectedAlgorithm, algorithmChoices[3])) {
-            algorithmLabel.setText(algorithmChoices[2] + " Results");
+        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[3])) {
             RandomNext randomNext = new RandomNext(inputTable);
             System.out.println(randomNext.getGanttChart());
             setResult(randomNext);
         }
+        algorithmLabel.setText(selectedAlgorithm + " Results");
     }
 
     @FXML private void backToMenu(ActionEvent event) throws IOException {
@@ -142,7 +140,7 @@ public class OutputScreenController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SelectionScreen.fxml"));
         Parent root = loader.load();
         SelectionScreenController selectionScreenController = loader.getController();
-        selectionScreenController.returnToSelectionScreen(resultsTable);
+        selectionScreenController.returnToSelectionScreen(resultsTable, selectedAlgorithm, quantumTime);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.ProcessList;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.FirstComeFirstServed;
+import org.lorelei.cpu_scheduler.Settings;
 
 
 import java.io.IOException;
@@ -31,8 +31,6 @@ public class SelectionScreenController implements Initializable {
     private int tableIndex = 0;
     private boolean inputError;
     String choice;
-
-    String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin", "Random Next"};
 
 
     @FXML
@@ -202,8 +200,11 @@ public class SelectionScreenController implements Initializable {
 
     }
 
-    void returnToSelectionScreen(TableView<Process> data){
+    void returnToSelectionScreen(TableView<Process> data, String previousAlgo, Double quantumTime){
+        this.quantumTimeInput.setText(String.valueOf(quantumTime));
         processTable.getItems().setAll(data.getItems());
+        algoChoice.setValue(previousAlgo);
+        choice = previousAlgo;
     }
 
 
@@ -214,6 +215,8 @@ public class SelectionScreenController implements Initializable {
             errorEmptyInput("Empty List");
             return;
         }
+
+        if(quantumTimeInputError()) return;
 
         if ("Round Robin".equals(choice) && quantumTimeInputError()) {
             return;
@@ -281,17 +284,17 @@ public class SelectionScreenController implements Initializable {
 
         try {
             inputQT = Double.parseDouble(quantumTimeInput.getText());
-
-
         } catch (NumberFormatException e){
             errorInvalidInput("Quantum Time");
             return true;
         }
 
-        if(inputQT<0) {
-            errorNegativeInput("Quantum Time");
+        if(Double.parseDouble(quantumTimeInput.getText())<=0) {
+            errorInvalidInput("Quantum Time");
             return true;
         }
+
+
 
         return false;
     }
@@ -299,8 +302,8 @@ public class SelectionScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        algoChoice.setValue(algorithmChoices[0]);
-        choice = algorithmChoices[0];
+        algoChoice.setValue(Settings.algorithmChoices[0]);
+        choice = Settings.algorithmChoices[0];
 
         timeQuantumContainer.setVisible(false);
         timeQuantumContainer.setVisible(false);
@@ -309,7 +312,7 @@ public class SelectionScreenController implements Initializable {
         tableArrivalTime.setCellValueFactory(new PropertyValueFactory<Process, Double>("arrivalTime"));
         tableBurstTime.setCellValueFactory(new PropertyValueFactory<Process, Double>("burstTime"));
 
-        algoChoice.getItems().addAll(algorithmChoices);
+        algoChoice.getItems().addAll(Settings.algorithmChoices);
         algoChoice.setOnAction(this::getAlgoChoice);
 
 

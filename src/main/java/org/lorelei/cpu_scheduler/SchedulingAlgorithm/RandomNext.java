@@ -9,29 +9,37 @@ public class RandomNext extends Algorithm{
         this.inputProcessList = new ArrayList<Process>(inputArray);
         this.processWaitList = new ArrayList<Process>(inputArray);
 
-
-
         double currentTime = 0.0;
-
         Random random = new Random();
 
 
-
         while(!processWaitList.isEmpty()||!processReadyList.isEmpty()){
-            processReadyList.add(processWaitList.remove(random.nextInt( 0,processWaitList.size())));
-            processReadyList.getFirst().setStartTime(currentTime);
-            System.out.println("CURRENT TIME:" + currentTime);
-            currentTime +=  processReadyList.getFirst().getBurstTime();
-            System.out.println("TAIL TIME:" + currentTime);
+            Process selected;
+            ArrayList<Process> checked = ProcessList.checkUnderTime(processWaitList, currentTime);
 
-            processReadyList.getFirst().setCompleteTime(currentTime);
-            processReadyList.getFirst().setWaitingTime(processReadyList.getFirst().startTime - processReadyList.getFirst().arrivalTime);
-            totalWaitingTime += processReadyList.getFirst().waitingTime;
-            totalTurnaroundTime += processReadyList.getFirst().getTurnaroundTime();
-            ganttChart.addCell(new GanttCell(processReadyList.getFirst().startTime, processReadyList.getFirst().completeTime, processReadyList.getFirst()));
-            processCompletedList.add(processReadyList.removeLast());
+            if(checked.isEmpty()){
+                selected = processWaitList.remove(random.nextInt(0, processWaitList.size()));
+            }else{
+                Process randomSelected = checked.get(random.nextInt(0, checked.size()));
+                selected = randomSelected;
+                processWaitList.remove(selected);
+            }
+
+            processReadyList.add(selected);
+            selected.setStartTime(currentTime);
+            currentTime += selected.getBurstTime();
+            selected.setCompleteTime(currentTime);
+            selected.setWaitingTime(selected.getStartTime() - selected.getArrivalTime());
+            totalWaitingTime += selected.getWaitingTime();
+            totalTurnaroundTime += selected.getTurnaroundTime();
+            ganttChart.addCell(new GanttCell(selected.getStartTime(), selected.getCompleteTime(), selected));
+            processReadyList.remove(selected);
+            processCompletedList.add(selected);
+
+            averageTurnaroundTime = totalTurnaroundTime/(processCompletedList.toArray().length);
+            averageWaitingTime = totalWaitingTime/(processCompletedList.toArray().length);
+
         }
-        System.out.println("RANDOMJOBNEXT GANNT CHART DETAILS -------------" + ganttChart);
         ganttChart.setResult(processCompletedList);
     }
 }
