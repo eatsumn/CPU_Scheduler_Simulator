@@ -1,6 +1,7 @@
 package org.lorelei.cpu_scheduler.SchedulingAlgorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RoundRobin extends Algorithm {
     ArrayList<Process> inputProcessList = new ArrayList<Process>();
@@ -16,7 +17,7 @@ public class RoundRobin extends Algorithm {
         this.completeTime = ProcessList.burstTimeTotal(inputArray);
         this.processWaitList = new ArrayList<Process>(inputProcessList);
         ArrayList<Process> inputArrayListInitial = new ArrayList<Process>();
-
+        HashMap<Integer, Double> startTimeInitialList = new HashMap<>();
 
         for(Process i: inputProcessList){
             inputArrayListInitial.add(new Process(i));
@@ -52,17 +53,24 @@ public class RoundRobin extends Algorithm {
             GanttCell tempGanttCell = new GanttCell(currentTime, currentTime + computedExecutionTime, tempProcess);
             ganttChart.addCell(tempGanttCell);
 
+            startTimeInitialList.putIfAbsent(
+                    processReadyList.getFirst().processNumber,
+                    currentTime
+            );
+
             currentTime += computedExecutionTime;
 
             tempSelected = new ArrayList<Process>(checkUnderTime(processWaitList, currentTime));
-
             processReadyList.addAll(tempSelected);
+
+
             if(selected.burstTime > 0) processReadyList.add(processReadyList.getFirst());
             if(selected.burstTime == 0){
                 for(Process i: inputArrayListInitial){
                     if(i.processNumber==selected.processNumber) {
                         Process placeHolderProcess = new Process(tempProcess.processNumber, tempProcess.arrivalTime, i.burstTime);
-                        placeHolderProcess.startTime = tempProcess.startTime;
+                        placeHolderProcess.startTime = startTimeInitialList.get(i.processNumber);
+                        System.out.println("HASHHHH MMAAAAAAAAAAAAPPPPPPPPPP" + startTimeInitialList);
                         placeHolderProcess.completeTime = completeTimeHold;
                         placeHolderProcess.waitingTime = placeHolderProcess.getTurnaroundTime() - placeHolderProcess.getBurstTime();
                         processCompletedList.add(placeHolderProcess);
@@ -86,15 +94,15 @@ public class RoundRobin extends Algorithm {
         ganttChart.setResult(processCompletedList);
 
 
-        double totalWaitingTime = 0;
-        double totalTurnAroundTime = 0;
+        totalWaitingTime = 0;
+        totalTurnaroundTime = 0;
 
         for(Process i: processCompletedList){
             totalWaitingTime += i.getWaitingTime();
-            totalTurnAroundTime += i.getTurnaroundTime();
+            totalTurnaroundTime += i.getTurnaroundTime();
         }
 
-        averageTurnaroundTime = totalTurnAroundTime/(processCompletedList.toArray().length);
+        averageTurnaroundTime = totalTurnaroundTime/(processCompletedList.toArray().length);
         averageWaitingTime = totalWaitingTime/(processCompletedList.toArray().length);
 
         System.out.println("\nFINAL: " +ganttChart);

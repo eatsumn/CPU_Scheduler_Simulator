@@ -7,6 +7,8 @@ public class Algorithm {
     GanttChart ganttChart = new GanttChart();
     double averageWaitingTime;
     double averageTurnaroundTime;
+    double totalWaitingTime;
+    double totalTurnaroundTime;
     ArrayList<Process> results = new ArrayList<>();
 
 
@@ -21,4 +23,12 @@ public class Algorithm {
 
     public double getAverageWaitingTime() { return averageWaitingTime; }
     public double getAverageTurnaroundTime() { return averageTurnaroundTime; }
+
+    public double getTotalWaitingTime() {
+        return totalWaitingTime;
+    }
+
+    public double getTotalTurnaroundTime() {
+        return totalTurnaroundTime;
+    }
 }

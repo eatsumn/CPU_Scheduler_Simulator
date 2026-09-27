@@ -7,13 +7,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -29,13 +28,12 @@ import java.util.ResourceBundle;
 public class OutputScreenController implements Initializable {
     @FXML private Pane ganttChart;
     @FXML private TableView<Process> resultsTable;
-    @FXML private Label averageWT, averageTAT;
+    @FXML private Label averageWT, averageTAT, totalWT, totalTAT;
     @FXML private TableColumn<Process, String> processColumn;
     @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, startColumn,completionColumn, waitingColumn, turnaroundColumn;
 
-    private RoundRobin roundRobin;
     private Double quantumTime;
-    private String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
+    private final String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
     private String selectedAlgorithm;
     private ArrayList<Process> inputTable = new ArrayList<>();
 
@@ -55,10 +53,17 @@ public class OutputScreenController implements Initializable {
         System.out.println(result.getGanttChart().getGanttChartProcess());
        // resultsTable.getItems().setAll(result.getResults());
         resultsTable.getItems().setAll(result.getGanttChart().getResult());
-        averageWT.setText("Average WT: " + format(result.getAverageWaitingTime()));
-        averageTAT.setText("Average TAT: " + format(result.getAverageTurnaroundTime()));
+        averageWT.setText("Average WT: \n" + format(result.getAverageWaitingTime()));
+        averageTAT.setText("Average TAT: \n" + format(result.getAverageTurnaroundTime()));
+        totalWT.setText("Total WT: \n" + format(result.getTotalWaitingTime()));
+        totalTAT.setText("Total TAT: \n" + format(result.getTotalTurnaroundTime()));
         var cells = result.getGanttChart().getChart();
         if (cells.isEmpty()) return;
+        ganttChartDisplay(cells, ganttChart);
+
+    }
+
+    private void ganttChartDisplay(ArrayList<GanttCell> cells, Pane ganttChart){
         double start = cells.getFirst().getStartTime();
         double end = cells.getLast().getCompleteTime();
         double scale = 52;
@@ -79,9 +84,9 @@ public class OutputScreenController implements Initializable {
             block.setFill(cell.isIdle() ? Color.web("#e2e8f0") : Color.web("#dbeafe"));
             block.setStroke(Color.web("#040910"));
             ganttChart.getChildren().add(block);
-            Label name = new Label(cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber());
+            Button name = new Button((cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber()));
             name.setLayoutX(x1); name.setLayoutY(52); name.setPrefWidth(width); name.setAlignment(javafx.geometry.Pos.CENTER);
-            name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033;");
+            name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033; -fx-background-color: transparent");
             ganttChart.getChildren().add(name);
         }
         double finalX = left + (end - start) * scale;
@@ -112,11 +117,11 @@ public class OutputScreenController implements Initializable {
 
         if (Objects.equals(selectedAlgorithm, algorithmChoices[0])) {
             System.out.println(inputTable);
-            FCFS fcfs = new FCFS(inputTable);
-            setResult(fcfs);
-            System.out.println(fcfs.getGanttChart());
+            FirstComeFirstServed firstComeFirstServed = new FirstComeFirstServed(inputTable);
+            setResult(firstComeFirstServed);
+            System.out.println(firstComeFirstServed.getGanttChart());
         } else if (Objects.equals(selectedAlgorithm, algorithmChoices[2])) {
-            roundRobin = new RoundRobin(inputTable, quantumTime);
+            RoundRobin roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
             setResult(roundRobin);
         }
@@ -127,7 +132,13 @@ public class OutputScreenController implements Initializable {
     }
 
     @FXML private void newCalculation(ActionEvent event) throws IOException {
-        navigate(event, "/fxml/SelectionScreen.fxml");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SelectionScreen.fxml"));
+        Parent root = loader.load();
+        SelectionScreenController selectionScreenController = loader.getController();
+        selectionScreenController.returnToSelectionScreen(resultsTable);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     private void navigate(ActionEvent event, String resource) throws IOException {

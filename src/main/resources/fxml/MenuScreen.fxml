@@ -18,13 +18,13 @@
       </Text>
       <VBox alignment="CENTER" layoutX="29.0" layoutY="234.0" prefHeight="319.0" prefWidth="364.0" spacing="20.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#GoToSelection" prefHeight="84.0" prefWidth="260.0" text="Start" />
-            <Button mnemonicParsing="false" prefHeight="82.0" prefWidth="260.0" text="Settings" />
-            <Button mnemonicParsing="false" prefHeight="76.0" prefWidth="260.0" text="Exit" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#GoToSelection" prefHeight="84.0" prefWidth="260.0" text="Start" />
+            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="82.0" prefWidth="260.0" text="Settings" />
+            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="260.0" text="Exit" />
          </children>
       </VBox>
       <Canvas height="289.0" layoutX="444.0" layoutY="248.0" width="330.0" />
-      <ImageView fitHeight="364.0" fitWidth="301.0" layoutX="473.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="364.0" fitWidth="301.0" layoutX="459.0" layoutY="211.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/main_charac.png" />
          </image>

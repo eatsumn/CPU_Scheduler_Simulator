@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.ProcessList;
-import org.lorelei.cpu_scheduler.SchedulingAlgorithm.FCFS;
+import org.lorelei.cpu_scheduler.SchedulingAlgorithm.FirstComeFirstServed;
 
 
 import java.io.IOException;
@@ -202,27 +202,10 @@ public class SelectionScreenController implements Initializable {
 
     }
 
-    @FXML
-    private void simulate(ActionEvent event) throws IOException {
-        if (processTable.getItems().isEmpty()) {
-            errorEmptyInput("Process");
-            return;
-        }
-        if (!"First Come First Serve".equals(algoChoice.getValue())) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Algorithm not available yet");
-            alert.setContentText("Choose First Come First Serve to view its results.");
-            alert.show();
-            return;
-        }
-        FCFS result = new FCFS(processTable.getItems());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OutputScreen.fxml"));
-        root = loader.load();
-        loader.<OutputScreenController>getController().setResult(result);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+    void returnToSelectionScreen(TableView<Process> data){
+        processTable.getItems().setAll(data.getItems());
     }
+
 
     @FXML
     void goToStart(ActionEvent event) throws IOException {
