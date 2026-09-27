@@ -53,6 +53,10 @@ public class Process {
     public Double getWaitingTime() { return waitingTime; }
     public Double getTurnaroundTime() { return completeTime == null ? 0 : completeTime - arrivalTime; }
 
+    public void setStartTime(Double startTime) {
+        this.startTime = startTime;
+    }
+
     public String getProcessNumberDisplay() {
         return processNumberDisplay;
     }

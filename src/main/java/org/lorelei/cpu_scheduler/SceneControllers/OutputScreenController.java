@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class OutputScreenController implements Initializable {
+    @FXML private Label algorithmLabel;
     @FXML private Pane ganttChart;
     @FXML private TableView<Process> resultsTable;
     @FXML private Label averageWT, averageTAT, totalWT, totalTAT;
@@ -33,7 +34,7 @@ public class OutputScreenController implements Initializable {
     @FXML private TableColumn<Process, Double> arrivalColumn, burstColumn, startColumn,completionColumn, waitingColumn, turnaroundColumn;
 
     private Double quantumTime;
-    private final String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
+    private final String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin", "Random Next"};
     private String selectedAlgorithm;
     private ArrayList<Process> inputTable = new ArrayList<>();
 
@@ -50,7 +51,7 @@ public class OutputScreenController implements Initializable {
     }
 
     public void setResult(Algorithm result) {
-        System.out.println(result.getGanttChart().getGanttChartProcess());
+        System.out.println("SET RESULT INPUT RESULT: " + result.getGanttChart().getGanttChartProcess());
        // resultsTable.getItems().setAll(result.getResults());
         resultsTable.getItems().setAll(result.getGanttChart().getResult());
         averageWT.setText("Average WT: \n" + format(result.getAverageWaitingTime()));
@@ -116,14 +117,20 @@ public class OutputScreenController implements Initializable {
         System.out.println("Selected Algo: " + selectedAlgorithm);
 
         if (Objects.equals(selectedAlgorithm, algorithmChoices[0])) {
+            algorithmLabel.setText(algorithmChoices[0] + " Results");
             System.out.println(inputTable);
             FirstComeFirstServed firstComeFirstServed = new FirstComeFirstServed(inputTable);
             setResult(firstComeFirstServed);
-            System.out.println(firstComeFirstServed.getGanttChart());
         } else if (Objects.equals(selectedAlgorithm, algorithmChoices[2])) {
+            algorithmLabel.setText(algorithmChoices[2] + " Results");
             RoundRobin roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
             setResult(roundRobin);
+        } else if (Objects.equals(selectedAlgorithm, algorithmChoices[3])) {
+            algorithmLabel.setText(algorithmChoices[2] + " Results");
+            RandomNext randomNext = new RandomNext(inputTable);
+            System.out.println(randomNext.getGanttChart());
+            setResult(randomNext);
         }
     }
 

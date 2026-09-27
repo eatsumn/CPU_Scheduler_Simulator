@@ -11,6 +11,11 @@ public class Algorithm {
     double totalTurnaroundTime;
     ArrayList<Process> results = new ArrayList<>();
 
+    ArrayList<Process> inputProcessList = new ArrayList<Process>();
+    ArrayList<Process> processWaitList = new ArrayList<Process>();
+    ArrayList<Process> processReadyList = new ArrayList<Process>();
+    ArrayList<Process> processCompletedList = new ArrayList<Process>();
+
 
     public GanttChart getGanttChart() {
         return ganttChart;

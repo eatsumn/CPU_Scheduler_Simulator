@@ -79,4 +79,25 @@ public class ProcessList{
 
         return total;
     }
+
+    public static ArrayList<Process> checkUnderTime(ArrayList<Process> inputArray, Double currentTime) {
+        //list down all process under a certain at
+        ArrayList<Process> output = new ArrayList<Process>();
+        ArrayList<Process> unsorted = new ArrayList<Process>();
+        ArrayList<Process> sorted = new ArrayList<Process>();
+
+        for (Process current : inputArray) {
+            if (current.arrivalTime <= currentTime) unsorted.add(current);
+        }
+
+        while (!unsorted.isEmpty()){
+            int indexSmallest = ProcessList.lowestAT(unsorted);
+            System.out.println(indexSmallest);
+
+            sorted.add(unsorted.get(indexSmallest));
+            unsorted.remove(unsorted.get(indexSmallest));
+        }
+        System.out.println(sorted);
+        return sorted;
+    }
 }

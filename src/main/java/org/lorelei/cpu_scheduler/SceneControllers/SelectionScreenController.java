@@ -32,7 +32,7 @@ public class SelectionScreenController implements Initializable {
     private boolean inputError;
     String choice;
 
-    String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin"};
+    String[] algorithmChoices = {"First Come First Serve", "Short Job Next", "Round Robin", "Random Next"};
 
 
     @FXML
@@ -237,6 +237,10 @@ public class SelectionScreenController implements Initializable {
         } else {
             outputScreenController.submitTable(inputTable, choice);
         }
+
+
+
+
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
