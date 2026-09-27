@@ -216,9 +216,10 @@ public class SelectionScreenController implements Initializable {
             return;
         }
 
-        if(quantumTimeInputError()) return;
+
 
         if ("Round Robin".equals(choice) && quantumTimeInputError()) {
+            if(quantumTimeInputError()) return;
             return;
         }
 
