@@ -23,28 +23,43 @@ public class SettingsScreenController implements Initializable {
     @FXML
     private Text decimalPlaceLabel;
 
+
+
     @FXML
     private Button menuButton;
+
+    @FXML
+    private CheckBox secretAlgoCheckBox;
 
     @FXML
     private CheckBox randomFloatCheckBox;
 
     @FXML
     void addDecimalPlace(ActionEvent event) {
-        Settings.randomDecimalPlace+=10;
-        decimalPlaceLabel.setText("Decimal Place: " + Settings.randomDecimalPlace);
+        Settings.randomDecimalPlace*=10;
+        if (Settings.randomDecimalPlace > 100000) Settings.randomDecimalPlace = 100000;
+        decimalPlaceLabel.setText("Decimal Place: " + 1.0/((double) Settings.randomDecimalPlace ));
     }
 
     @FXML
     void decreaseDecimalPlace(ActionEvent event) {
-        Settings.randomDecimalPlace-=10;
-        if (Settings.randomDecimalPlace == 0) Settings.randomDecimalPlace = 10;
-        decimalPlaceLabel.setText("Decimal Place: " + Settings.randomDecimalPlace);
+        Settings.randomDecimalPlace/=10;
+        if (Settings.randomDecimalPlace < 10) Settings.randomDecimalPlace = 10;
+        decimalPlaceLabel.setText("Decimal Place: " + 1.0/((double) Settings.randomDecimalPlace ));
     }
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
         SceneManager.navigate(event, "/fxml/MenuScreen.fxml",this);
+    }
+
+    @FXML
+    void secretAlgoSwitch(ActionEvent event){
+        if (secretAlgoCheckBox.isSelected()){
+            Settings.updateAlgos(true);
+        }else {
+            Settings.updateAlgos(false);
+        }
     }
 
     @FXML
@@ -59,6 +74,7 @@ public class SettingsScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         randomFloatCheckBox.setSelected(Settings.randomFloat);
+        secretAlgoCheckBox.setSelected(Settings.enableSecretAlgos);
         decimalPlaceLabel.setText("Decimal Place: " + Settings.randomDecimalPlace);
 
     }

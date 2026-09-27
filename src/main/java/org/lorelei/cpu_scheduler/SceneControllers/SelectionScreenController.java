@@ -86,13 +86,17 @@ public class SelectionScreenController implements Initializable {
 
         Process newProcess = new Process(++tableIndex, randomSettingsReturn(ranAt), randomSettingsReturn(ranBt));
         processTable.getItems().add(newProcess);
+
+        System.out.println("NEGATIVE NUMBERS" + Settings.randomFloat);
+        System.out.println("ROUND VAULE"+ Settings.randomDecimalPlace);
     }
 
     private double randomSettingsReturn(double a){
         if(Settings.randomFloat){
-            return Math.round(a * Settings.randomDecimalPlace) / (double)Settings.randomDecimalPlace;
+            double b = a * Settings.randomDecimalPlace;
+            return (double) Math.round(b) / Settings.randomDecimalPlace;
         }else {
-            return (Math.random()*2==1) ? Math.ceil(a) : Math.floor(a);
+            return Math.ceil(a);
         }
     }
 
@@ -310,8 +314,8 @@ public class SelectionScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        algoChoice.setValue(Settings.algorithmChoices[0]);
-        choice = Settings.algorithmChoices[0];
+        algoChoice.setValue(Settings.algorithmChoices.get(0));
+        choice = Settings.algorithmChoices.get(0);
 
         timeQuantumContainer.setVisible(false);
         timeQuantumContainer.setVisible(false);

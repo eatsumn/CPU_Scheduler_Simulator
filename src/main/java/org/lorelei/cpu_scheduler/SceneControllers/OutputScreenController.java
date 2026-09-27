@@ -116,18 +116,22 @@ public class OutputScreenController implements Initializable {
         System.out.println("QUANTUM TIME: " + quantumTime);
         System.out.println("Selected Algo: " + selectedAlgorithm);
 
-        if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[0])) {
+        if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(0))) {
             System.out.println(inputTable);
             FirstComeFirstServed firstComeFirstServed = new FirstComeFirstServed(inputTable);
             setResult(firstComeFirstServed);
-        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[2])) {
+        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(2))) {
             RoundRobin roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
             setResult(roundRobin);
-        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices[3])) {
+        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(3))) {
             RandomNext randomNext = new RandomNext(inputTable);
             System.out.println(randomNext.getGanttChart());
             setResult(randomNext);
+        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(4))) {
+            ArrivalBurstProduct arrivalBurstProduct = new ArrivalBurstProduct(inputTable);
+            System.out.println(arrivalBurstProduct.getGanttChart());
+            setResult(arrivalBurstProduct);
         }
         algorithmLabel.setText(selectedAlgorithm + " Results");
     }

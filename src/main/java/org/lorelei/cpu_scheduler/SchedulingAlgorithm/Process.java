@@ -8,6 +8,7 @@ public class Process {
     Double startTime;
     Double completeTime;
     Double waitingTime;
+    Double tat;
 
     public Process(int n,Double at,Double bt){
         this.processNumber = n;
@@ -24,6 +25,7 @@ public class Process {
 
     public Process(Process other) {
         this.processNumber = other.processNumber;
+        this.processNumberDisplay ="Process #"+other.processNumber;
         this.arrivalTime = other.arrivalTime;
         this.burstTime = other.burstTime;
     }
