@@ -85,10 +85,9 @@ public class OutputScreenController implements Initializable {
             block.setFill(cell.isIdle() ? Color.web("#e2e8f0") : Color.web("#dbeafe"));
             block.setStroke(Color.web("#040910"));
             ganttChart.getChildren().add(block);
-            Label name = new Label(cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber());
-            name.setLayoutX(x1); name.setLayoutY(52); name.setPrefWidth(width); name.setMinWidth(width); name.setMaxWidth(width);
-            name.setAlignment(javafx.geometry.Pos.CENTER);
-            name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033; -fx-padding: 0;");
+            Button name = new Button((cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber()));
+            name.setLayoutX(x1); name.setLayoutY(52); name.setPrefWidth(width); name.setAlignment(javafx.geometry.Pos.CENTER);
+            name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033; -fx-background-color: transparent");
             ganttChart.getChildren().add(name);
         }
         double finalX = left + (end - start) * scale;
@@ -121,9 +120,6 @@ public class OutputScreenController implements Initializable {
             System.out.println(inputTable);
             FirstComeFirstServed firstComeFirstServed = new FirstComeFirstServed(inputTable);
             setResult(firstComeFirstServed);
-        } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(1))) {
-            ShortJobNext shortJobNext = new ShortJobNext(inputTable);
-            setResult(shortJobNext);
         } else if (Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(2))) {
             RoundRobin roundRobin = new RoundRobin(inputTable, quantumTime);
             System.out.println(roundRobin.getGanttChart());
@@ -137,9 +133,7 @@ public class OutputScreenController implements Initializable {
             System.out.println(arrivalBurstProduct.getGanttChart());
             setResult(arrivalBurstProduct);
         }
-        algorithmLabel.setText(Objects.equals(selectedAlgorithm, Settings.algorithmChoices.get(1))
-                ? "Shortest Job Next Results"
-                : selectedAlgorithm + " Results");
+        algorithmLabel.setText(selectedAlgorithm + " Results");
     }
 
     @FXML private void backToMenu(ActionEvent event) throws IOException {

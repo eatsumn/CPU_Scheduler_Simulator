@@ -27,7 +27,8 @@ public class MenuController {
 
 
     public void ExitProgram(ActionEvent e){
-
+        Stage currentStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
+        currentStage.close();
     }
 
 
