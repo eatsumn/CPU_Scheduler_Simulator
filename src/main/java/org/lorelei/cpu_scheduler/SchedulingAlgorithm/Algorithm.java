@@ -36,4 +36,16 @@ public class Algorithm {
     public double getTotalTurnaroundTime() {
         return totalTurnaroundTime;
     }
+
+    public void setProcessWaitList(ArrayList<Process> processWaitList) {
+        this.processWaitList = processWaitList;
+    }
+
+    public void setProcessReadyList(ArrayList<Process> processReadyList) {
+        this.processReadyList = processReadyList;
+    }
+
+    public void setProcessCompletedList(ArrayList<Process> processCompletedList) {
+        this.processCompletedList = processCompletedList;
+    }
 }

@@ -74,6 +74,7 @@ public class OutputScreenController implements Initializable {
         var cells = result.getGanttChart().getChart();
         if (cells.isEmpty()) return;
         ganttChartDisplay(cells, ganttChart);
+        System.out.println(result.getGanttChart());
 
     }
 
@@ -110,11 +111,15 @@ public class OutputScreenController implements Initializable {
             }
             csvRow(writer, "");
             csvRow(writer, "Gantt Chart");
-            csvRow(writer, "Process", "Start Time", "End Time", "Duration");
+            csvRow(writer, "Process", "Start Time", "End Time", "Duration", "Wait List", "Ready List", "Completed List");
             for (GanttCell cell : currentResult.getGanttChart().getChart()) {
                 csvRow(writer, cell.isIdle() ? "Idle" : "Process #" + cell.getProcess().getProcessNumber(),
                         format(cell.getStartTime()), format(cell.getCompleteTime()),
-                        format(cell.getCompleteTime() - cell.getStartTime()));
+                        format(cell.getCompleteTime() - cell.getStartTime()),
+                        cell.printList(GanttCell.whichList.processWaitList),
+                        cell.printList(GanttCell.whichList.processReadyList),
+                        cell.printList(GanttCell.whichList.processCompleteList)
+                        );
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Results exported to:\n" + file.getAbsolutePath());
             alert.setHeaderText("Export complete");
@@ -155,6 +160,11 @@ public class OutputScreenController implements Initializable {
             time.setLayoutX(x1 - 25); time.setLayoutY(5); time.setPrefWidth(50); time.setAlignment(javafx.geometry.Pos.CENTER);
             ganttChart.getChildren().add(time);
             Rectangle block = new Rectangle(x1, 47, width, 40);
+            Button button = new Button();
+            button.setOnMouseClicked(e -> ShowCellDetailScreen.show(this, mainRoot, cell));
+            button.setLayoutX(x1);
+            button.setLayoutY(47);
+            button.setPrefSize(width, 40);
             block.setFill(cell.isIdle() ? Color.web("#e2e8f0") : Color.web("#dbeafe"));
             block.setStroke(Color.web("#040910"));
             ganttChart.getChildren().add(block);
@@ -163,6 +173,8 @@ public class OutputScreenController implements Initializable {
             name.setAlignment(javafx.geometry.Pos.CENTER);
             name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033; -fx-padding: 0;");
             ganttChart.getChildren().add(name);
+            ganttChart.getChildren().add(button);
+
         }
         double finalX = left + (end - start) * scale;
         Label lastTime = new Label(format(end));

@@ -19,7 +19,6 @@ public class ProcessList{
                 longestAT = current.processNumber;
             }
         }
-        System.out.println("highest is: " + highestAT + " at index:" + longestAT);
         return highestAT;
     }
 
@@ -34,7 +33,6 @@ public class ProcessList{
                 longestBT = current.processNumber;
             }
         }
-        System.out.println("highest is: " + highestBT + " at index:" + longestBT);
         return highestBT;
     }
 
@@ -64,7 +62,6 @@ public class ProcessList{
             }
 
         }
-        //System.out.println("index of smallest -> " + indexOfSmallest + " which is" + ((!inputList.isEmpty()) ? inputList.get(indexOfSmallest).processNumber : "empty"));
 
         return (indexOfSmallest);
     }

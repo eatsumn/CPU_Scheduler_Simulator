@@ -17,7 +17,6 @@ public class GanttCell{
         this.completeTime = completeTime;
         this.process = process;
         this.process.setCompleteTime(this.completeTime);
-        System.out.println("CHECKKKKKKKKKKKKKKK MMEMEEEEEEEEEEE OOOOOUUUUUUUUUUTTTTT:     " + this.process.getCompleteTime());
         this.isIdle = false;
     }
 
@@ -70,7 +69,7 @@ public class GanttCell{
     public void setIndex_ID(int index_ID) {
         this.index_ID = index_ID;
     }
-
+    /*
     @Override
     public String toString() {
         String holder = "\n";
@@ -81,5 +80,47 @@ public class GanttCell{
         }
         holder += " | TAIL: " + startTime + " | HEAD: " + completeTime + " index_caller: " + index_ID + "\n";
         return holder;
+    }*/
+
+    public enum whichList{
+        processWaitList,
+        processReadyList,
+        processCompleteList
+    }
+
+    public String printList(whichList input){
+        ArrayList<Process> chosenArray = new ArrayList<>();
+        String output = "";
+        switch (input){
+            case processWaitList -> chosenArray = processWaitList;
+            case processReadyList -> chosenArray = processReadyList;
+            case processCompleteList -> chosenArray = processCompleteList;
+        }
+
+        if(chosenArray.isEmpty()) return "EMPTY";
+
+        for(Process process : chosenArray){
+            output += "Process #" + process.processNumber;
+            if(process == chosenArray.getLast()) break;
+            output += ", ";
+        }
+
+        return output;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "GanttCell{" +
+                "isIdle=" + isIdle +
+                ", startTime=" + startTime +
+                ", completeTime=" + completeTime +
+                ", process=" + process +
+                ", index_ID=" + index_ID +
+                ", processWaitList=" + processWaitList +
+                ", processReadyList=" + processReadyList +
+                ", processCompleteList=" + processCompleteList +
+                '}';
     }
 }

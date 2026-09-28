@@ -77,7 +77,7 @@ public class Process {
 
     @Override
     public String toString() {
-        return "Process #" + processNumber +
+        return "\nProcess #" + processNumber +
                 " |AT: " + arrivalTime +
                 " |BT: " + burstTime +
                 " |ST: " + startTime +

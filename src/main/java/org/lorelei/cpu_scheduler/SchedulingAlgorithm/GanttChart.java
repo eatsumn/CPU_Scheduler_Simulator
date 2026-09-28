@@ -30,6 +30,10 @@ public class GanttChart {
         return result;
     }
 
+    public int getTotalCells(){
+        return chart.size();
+    }
+
     public void setResult(ArrayList<Process> result) {
         this.result = result;
     }
