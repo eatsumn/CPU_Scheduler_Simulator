@@ -10,6 +10,8 @@ public class Settings {
      public static boolean randomFloat = false;
      public static int randomDecimalPlace = 10;
 
+     public static int FPS = 60;
+
      public static void updateAlgos(boolean secretAlgo){
          if(secretAlgo){
              algorithmChoices.addAll(secretAlgos);
@@ -18,4 +20,6 @@ public class Settings {
          }
          enableSecretAlgos = secretAlgo;
      }
+
+
 }

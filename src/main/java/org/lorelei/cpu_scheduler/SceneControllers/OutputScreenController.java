@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -34,6 +35,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class OutputScreenController implements Initializable {
+    @FXML private AnchorPane mainRoot;
     @FXML private Label algorithmLabel;
     @FXML private Pane ganttChart;
     @FXML private TableView<Process> resultsTable;
@@ -56,6 +58,8 @@ public class OutputScreenController implements Initializable {
         completionColumn.setCellValueFactory(new PropertyValueFactory<>("completeTime"));
         waitingColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTime"));
         turnaroundColumn.setCellValueFactory(new PropertyValueFactory<>("turnaroundTime"));
+
+        LoadingScreenController.StartLoadingScreen(this, mainRoot);
     }
 
     public void setResult(Algorithm result) {
