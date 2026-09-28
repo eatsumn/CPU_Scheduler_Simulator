@@ -20,7 +20,7 @@
          <children>
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#GoToSelection" prefHeight="84.0" prefWidth="260.0" text="Start" />
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#GoToSettings" prefHeight="82.0" prefWidth="260.0" text="Settings" />
-            <Button focusTraversable="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="260.0" text="Exit" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#ExitProgram" prefHeight="76.0" prefWidth="260.0" text="Exit" />
          </children>
       </VBox>
       <Canvas height="289.0" layoutX="444.0" layoutY="248.0" width="330.0" />
