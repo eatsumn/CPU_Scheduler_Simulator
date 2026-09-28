@@ -61,6 +61,7 @@
    <children>
     <Button mnemonicParsing="false" onAction="#backToMenu" prefHeight="40.0" prefWidth="120.0" text="Back To Menu" />
     <Button mnemonicParsing="false" onAction="#newCalculation" prefHeight="40.0" prefWidth="160.0" text="Back to Input" />
+    <Button mnemonicParsing="false" onAction="#exportResults" prefHeight="40.0" prefWidth="160.0" text="Export to Excel" />
    </children>
    <padding>
             <Insets left="15.0" />

@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,6 +23,11 @@ import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
 import org.lorelei.cpu_scheduler.Settings;
 
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -37,6 +44,7 @@ public class OutputScreenController implements Initializable {
     private Double quantumTime;
     private String selectedAlgorithm;
     private ArrayList<Process> inputTable = new ArrayList<>();
+    private Algorithm currentResult;
 
 
     @Override
@@ -51,6 +59,7 @@ public class OutputScreenController implements Initializable {
     }
 
     public void setResult(Algorithm result) {
+        currentResult = result;
         System.out.println("SET RESULT INPUT RESULT: " + result.getGanttChart().getGanttChartProcess());
        // resultsTable.getItems().setAll(result.getResults());
         resultsTable.getItems().setAll(result.getGanttChart().getResult());
@@ -62,6 +71,66 @@ public class OutputScreenController implements Initializable {
         if (cells.isEmpty()) return;
         ganttChartDisplay(cells, ganttChart);
 
+    }
+
+    @FXML private void exportResults() {
+        if (currentResult == null) return;
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Export scheduling results");
+        chooser.setInitialFileName("scheduling-results.csv");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel-compatible CSV (*.csv)", "*.csv"));
+        File file = chooser.showSaveDialog(resultsTable.getScene().getWindow());
+        if (file == null) return;
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            // Excel uses this marker to detect UTF-8 correctly, including on Windows.
+            writer.write('\uFEFF');
+            csvRow(writer, "CPU Scheduling Results");
+            csvRow(writer, "Algorithm", selectedAlgorithm);
+            if (quantumTime != null) csvRow(writer, "Time Quantum", format(quantumTime));
+            csvRow(writer, "");
+            csvRow(writer, "Summary");
+            csvRow(writer, "Metric", "Value");
+            csvRow(writer, "Average Waiting Time", format(currentResult.getAverageWaitingTime()));
+            csvRow(writer, "Average Turnaround Time", format(currentResult.getAverageTurnaroundTime()));
+            csvRow(writer, "Total Waiting Time", format(currentResult.getTotalWaitingTime()));
+            csvRow(writer, "Total Turnaround Time", format(currentResult.getTotalTurnaroundTime()));
+            csvRow(writer, "");
+            csvRow(writer, "Process Calculations");
+            csvRow(writer, "Process", "Arrival Time", "Burst Time", "Start Time", "Completion Time", "Waiting Time", "Turnaround Time");
+            for (Process process : currentResult.getGanttChart().getResult()) {
+                csvRow(writer, process.getProcessNumberDisplay(), format(process.getArrivalTime()),
+                        format(process.getBurstTime()), format(process.getStartTime()),
+                        format(process.getCompleteTime()), format(process.getWaitingTime()),
+                        format(process.getTurnaroundTime()));
+            }
+            csvRow(writer, "");
+            csvRow(writer, "Gantt Chart");
+            csvRow(writer, "Process", "Start Time", "End Time", "Duration");
+            for (GanttCell cell : currentResult.getGanttChart().getChart()) {
+                csvRow(writer, cell.isIdle() ? "Idle" : "Process #" + cell.getProcess().getProcessNumber(),
+                        format(cell.getStartTime()), format(cell.getCompleteTime()),
+                        format(cell.getCompleteTime() - cell.getStartTime()));
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Results exported to:\n" + file.getAbsolutePath());
+            alert.setHeaderText("Export complete");
+            alert.showAndWait();
+        } catch (IOException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Could not export the results.\n" + exception.getMessage());
+            alert.setHeaderText("Export failed");
+            alert.showAndWait();
+        }
+    }
+
+    private void csvRow(BufferedWriter writer, String... values) throws IOException {
+        for (int i = 0; i < values.length; i++) {
+            if (i > 0) writer.write(',');
+            String value = values[i] == null ? "" : values[i];
+            writer.write('"');
+            writer.write(value.replace("\"", "\"\""));
+            writer.write('"');
+        }
+        writer.newLine();
     }
 
     private void ganttChartDisplay(ArrayList<GanttCell> cells, Pane ganttChart){
