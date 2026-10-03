@@ -41,8 +41,10 @@ public class RandomNext extends Algorithm{
 
             averageTurnaroundTime = totalTurnaroundTime/(processCompletedList.toArray().length);
             averageWaitingTime = totalWaitingTime/(processCompletedList.toArray().length);
+            ganttChart.setLastListData(processWaitList,processReadyList,processCompletedList);
 
         }
         ganttChart.setResult(processCompletedList);
+
     }
 }

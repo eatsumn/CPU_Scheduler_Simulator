@@ -1,0 +1,224 @@
+
+.root {
+    -fx-background-color: linear-gradient(to bottom, #000e28 0%, #14304e 100%);
+    -fx-font-size: 12px;
+    -fx-base: #16324f;
+    -fx-accent: #10b981;
+    -fx-focus-color: #10b981;
+    -fx-faint-focus-color: transparent;
+}
+
+
+
+.label {
+    -fx-text-fill: #5b7ba3;
+}
+
+.button {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 14;
+
+    -fx-font-size: 12px;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #34d399;
+}
+
+.button:pressed {
+    -fx-background-color: #059669;
+}
+
+.button:focused {
+    -fx-background-insets: 0;
+}
+
+.outline-button {
+    -fx-background-color: #0b2140;
+    -fx-background-radius: 14;
+    -fx-border-color: #10b981;
+    -fx-border-radius: 14;
+    -fx-border-width: 1.2;
+    -fx-text-fill: #10b981;
+}
+
+.outline-button:hover {
+    -fx-background-color: #14304e;
+    -fx-text-fill: #34d399;
+}
+
+.text-field {
+    -fx-background-color: #16324f;
+    -fx-background-radius: 14;
+    -fx-border-color: #10b981;
+    -fx-border-radius: 14;
+    -fx-border-width: 1.2;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #5b7ba3;
+    -fx-padding: 6 12 6 12;
+}
+
+.text-field:focused {
+    -fx-border-color: #34d399;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.45), 8, 0, 0, 0);
+}
+
+.table-view {
+    -fx-background-color: #16324f;
+    -fx-background-radius: 0;
+    -fx-border-color: #10b981;
+    -fx-border-width: 1.2;
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #0b2140;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #10b981 transparent;
+    -fx-size: 36;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #10b981;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #16324f;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #1a3857;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #10b981;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #04201c;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: #5b7ba3;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 6;
+}
+
+.scroll-bar .track,
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button,
+.scroll-bar .corner {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+.tool-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 4 0;
+    -fx-spacing: 12;
+}
+
+.footer-bar {
+    -fx-background-color: #061a33;
+}
+
+.choice-box {
+    -fx-background-color: #14304e;
+    -fx-background-radius: 14;
+    -fx-border-color: #10b981;
+    -fx-border-radius: 14;
+    -fx-border-width: 1.2;
+    -fx-padding: 4 10 4 10;
+}
+
+.choice-box .label {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 15px;
+}
+
+.choice-box .open-button .arrow {
+    -fx-background-color: #10b981;
+}
+
+.choice-box:hover {
+    -fx-background-color: #1a3857;
+}
+
+
+.context-menu {
+    -fx-background-color: #0b2140;
+    -fx-background-radius: 10;
+    -fx-border-color: #10b981;
+    -fx-border-radius: 10;
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused,
+.menu-item:hover {
+    -fx-background-color: #10b981;
+}
+
+.menu-item:focused .label,
+.menu-item:hover .label {
+    -fx-text-fill: #04201c;
+}
+
+.top-bar {
+    -fx-background-color: #10b981;
+}
+
+.top-bar-title {
+    -fx-fill: #04201c;
+    -fx-font-size: 16px;
+}
+
+.page-title {
+    -fx-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-fill: #5b7ba3;
+    -fx-font-size: 18px;
+}
+
+.divider {
+    -fx-background-color: #10b981;
+    -fx-pref-height: 3;
+    -fx-min-height: 3;
+    -fx-max-height: 3;
+}

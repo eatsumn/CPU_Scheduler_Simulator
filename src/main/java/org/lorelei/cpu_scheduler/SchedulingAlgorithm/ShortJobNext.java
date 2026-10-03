@@ -42,6 +42,8 @@ public class ShortJobNext extends Algorithm{
             ganttChart.addCell(new GanttCell(result.getStartTime(), result.getCompleteTime(), result));
             totalWaitingTime += result.getWaitingTime();
             totalTurnaroundTime += result.getTurnaroundTime();
+            ganttChart.setLastListData(processWaitList,processReadyList,processCompletedList);
+
         }
 
         if (!results.isEmpty()) {
@@ -49,5 +51,6 @@ public class ShortJobNext extends Algorithm{
             averageTurnaroundTime = totalTurnaroundTime / results.size();
         }
         ganttChart.setResult(results);
+
     }
 }

@@ -1,0 +1,30 @@
+#rootPane {
+    -fx-background-color: linear-gradient(to bottom, #020E27 0%, #153450 100%);
+}
+
+#header {
+    -fx-background-color: #10B981;
+}
+
+
+
+
+.button {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 14;
+
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #34d399;
+}
+
+.button:pressed {
+    -fx-background-color: #059669;
+}
+
+.button:focused {
+    -fx-background-insets: 0;
+}

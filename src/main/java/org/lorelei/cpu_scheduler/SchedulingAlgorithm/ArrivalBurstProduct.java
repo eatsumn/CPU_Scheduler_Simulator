@@ -39,6 +39,7 @@ public class ArrivalBurstProduct extends Algorithm {
             processCompletedList.add(process);
             tempGantCell.setProcessCompleteList(new ArrayList<Process>(processCompletedList));
             ganttChart.addCell(tempGantCell);
+            ganttChart.setLastListData(processWaitList,processReadyList,processCompletedList);
 
         }
 
@@ -48,6 +49,7 @@ public class ArrivalBurstProduct extends Algorithm {
 
 
         ganttChart.setResult(processCompletedList);
+
 
         System.out.println("OUTPUT OF ABP ALGO: " + ganttChart.result);
 

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.lorelei.cpu_scheduler.SchedulingAlgorithm.Process;
@@ -16,6 +17,7 @@ import org.lorelei.cpu_scheduler.SchedulingAlgorithm.GanttCell;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ShowCellDetailScreen   {
@@ -56,14 +58,19 @@ public class ShowCellDetailScreen   {
 
 
     private void populateList(ArrayList<Process> pL, listType x) {
-       if(x==listType.completedList){
-           completedListContainer.getChildren().setAll(pL.stream().map(p -> new Text(String.valueOf(p.getProcessNumberDisplay()))).toList());
-       } else if (x==listType.readyList) {
-           readyListContainer.getChildren().setAll(pL.stream().map(p -> new Text(String.valueOf(p.getProcessNumberDisplay()))).toList());
-       } else if (x==listType.waitList) {
-           waitListContainer.getChildren().setAll(pL.stream().map(p -> new Text(String.valueOf(p.getProcessNumberDisplay()))).toList());
-       }
+        List<Text> items = pL.stream().map(p -> {
+            Text t = new Text(String.valueOf(p.getProcessNumberDisplay()));
+            t.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: white;");
+            return t;
+        }).toList();
 
+        if (x == listType.completedList) {
+            completedListContainer.getChildren().setAll(items);
+        } else if (x == listType.readyList) {
+            readyListContainer.getChildren().setAll(items);
+        } else if (x == listType.waitList) {
+            waitListContainer.getChildren().setAll(items);
+        }
     }
 
 
@@ -74,6 +81,7 @@ public class ShowCellDetailScreen   {
             ShowCellDetailScreen controller = loader.getController();
             controller.setCell(cell);
             original.getChildren().add(overlay);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

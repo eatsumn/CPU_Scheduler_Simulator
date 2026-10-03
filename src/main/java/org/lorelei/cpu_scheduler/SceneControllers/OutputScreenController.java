@@ -7,12 +7,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.FileChooser;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -31,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -62,11 +63,34 @@ public class OutputScreenController implements Initializable {
         LoadingScreenController.StartLoadingScreen(this, mainRoot);
     }
 
+    private void showTableResult(Algorithm result, int decimalPointLimit) {
+        resultsTable.getItems().setAll(result.getGanttChart().getResult());
+
+        for (TableColumn<Process, Double> col : List.of(
+                arrivalColumn, burstColumn, startColumn,
+                completionColumn, waitingColumn, turnaroundColumn)) {
+            col.setCellFactory(c -> new TableCell<>() {
+                @Override
+                protected void updateItem(Double value, boolean empty) {
+                    super.updateItem(value, empty);
+                    if (empty || value == null) {
+                        setText(null);
+                    } else {
+                        setText(value == Math.rint(value)
+                                ? String.valueOf(value.longValue())
+                                : String.format(java.util.Locale.ROOT, "%." + decimalPointLimit + "f", value));
+                    }
+                }
+            });
+        }
+    }
+
+
     public void setResult(Algorithm result) {
         currentResult = result;
         System.out.println("SET RESULT INPUT RESULT: " + result.getGanttChart().getGanttChartProcess());
        // resultsTable.getItems().setAll(result.getResults());
-        resultsTable.getItems().setAll(result.getGanttChart().getResult());
+        showTableResult(result, (String.valueOf(Settings.OutDecimalPlace).length()));
         averageWT.setText("Average WT: \n" + format(result.getAverageWaitingTime()));
         averageTAT.setText("Average TAT: \n" + format(result.getAverageTurnaroundTime()));
         totalWT.setText("Total WT: \n" + format(result.getTotalWaitingTime()));
@@ -142,44 +166,85 @@ public class OutputScreenController implements Initializable {
         writer.newLine();
     }
 
+
+
     private void ganttChartDisplay(ArrayList<GanttCell> cells, Pane ganttChart){
         double start = cells.getFirst().getStartTime();
         double end = cells.getLast().getCompleteTime();
-        double scale = 52;
         double left = 34;
+
+        double minBlockWidth = 60;
+        double smallest = Double.MAX_VALUE;
+        for (GanttCell c : cells) {
+            double d = c.getCompleteTime() - c.getStartTime();
+            if (d > 0) smallest = Math.min(smallest, d);
+        }
+        double scale = 52;
+        if (smallest != Double.MAX_VALUE) {
+            scale = Math.max(52, minBlockWidth / smallest);
+        }
         ganttChart.setPrefWidth(Math.max(650, (end - start) * scale + left * 2));
         ganttChart.setMinWidth(ganttChart.getPrefWidth());
         ganttChart.setPrefHeight(112);
         ganttChart.setMinHeight(112);
+
         for (GanttCell cell : cells) {
             double x1 = left + (cell.getStartTime() - start) * scale;
             double x2 = left + (cell.getCompleteTime() - start) * scale;
-            double width = x2 - x1;
+            double width = (x2 - x1);
             Label time = new Label(format(cell.getStartTime()));
-            time.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033;");
-            time.setLayoutX(x1 - 25); time.setLayoutY(5); time.setPrefWidth(50); time.setAlignment(javafx.geometry.Pos.CENTER);
+            time.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2e1065;");
+            time.setLayoutX(x1 - 25);
+            time.setLayoutY(5);
+            time.setPrefWidth(50);
+            time.setAlignment(javafx.geometry.Pos.CENTER);
             ganttChart.getChildren().add(time);
+
             Rectangle block = new Rectangle(x1, 47, width, 40);
+            block.setArcWidth(16);
+            block.setArcHeight(16);
+            block.setStrokeWidth(1.5);
+            if (cell.isIdle()) {
+                block.setFill(Color.web("#ede9fe"));
+                block.setStroke(Color.web("#a78bfa"));
+            } else {
+                block.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
+                        new Stop(0, Color.web("#a78bfa")),
+                        new Stop(1, Color.web("#7c3aed"))));
+                block.setStroke(Color.web("#5b21b6"));
+            }
+            block.setEffect(new DropShadow(6, 0, 2, Color.web("#4c1d9544")));
+            ganttChart.getChildren().add(block);
+
+            Label name = new Label(cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber());
+            int fontSize = width < 40 ? 11 : 16;
+            name.setLayoutX(x1);
+            name.setLayoutY(52);
+            name.setPrefWidth(width);
+            name.setMinWidth(width);
+            name.setMaxWidth(width);
+            name.setAlignment(javafx.geometry.Pos.CENTER);
+            name.setStyle("-fx-font-family: monospace; -fx-font-size: " + fontSize + "px; -fx-font-weight: bold; "
+                    + "-fx-padding: 0; -fx-background-color: transparent; "
+                    + "-fx-text-fill: " + (cell.isIdle() ? "#5b21b6" : "white") + ";");
+            ganttChart.getChildren().add(name);
+
             Button button = new Button();
             button.setOnMouseClicked(e -> ShowCellDetailScreen.show(this, mainRoot, cell));
             button.setLayoutX(x1);
             button.setLayoutY(47);
+            button.setStyle("-fx-background-color: transparent; -fx-text-fill: transparent;");
             button.setPrefSize(width, 40);
-            block.setFill(cell.isIdle() ? Color.web("#e2e8f0") : Color.web("#dbeafe"));
-            block.setStroke(Color.web("#040910"));
-            ganttChart.getChildren().add(block);
-            Label name = new Label(cell.isIdle() ? "Idle" : "P" + cell.getProcess().getProcessNumber());
-            name.setLayoutX(x1); name.setLayoutY(52); name.setPrefWidth(width); name.setMinWidth(width); name.setMaxWidth(width);
-            name.setAlignment(javafx.geometry.Pos.CENTER);
-            name.setStyle("-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #172033; -fx-padding: 0;");
-            ganttChart.getChildren().add(name);
             ganttChart.getChildren().add(button);
-
         }
+
         double finalX = left + (end - start) * scale;
         Label lastTime = new Label(format(end));
-        lastTime.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #111316;");
-        lastTime.setLayoutX(finalX - 25); lastTime.setLayoutY(5); lastTime.setPrefWidth(50); lastTime.setAlignment(javafx.geometry.Pos.CENTER);
+        lastTime.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2e1065;");
+        lastTime.setLayoutX(finalX - 25);
+        lastTime.setLayoutY(5);
+        lastTime.setPrefWidth(50);
+        lastTime.setAlignment(javafx.geometry.Pos.CENTER);
         ganttChart.getChildren().add(lastTime);
     }
 

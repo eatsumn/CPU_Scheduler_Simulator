@@ -1,0 +1,231 @@
+/* ===== Palette =====
+   bg top      #000e28
+   bg bottom   #153450
+   panel       #15324F
+   accent      #10b981
+   muted text  #6087ad
+   footer      #061E34
+*/
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* ---------- Main background ---------- */
+#mainRoot {
+    -fx-background-color: linear-gradient(to bottom, #000e28 0%, #153450 100%);
+}
+
+/* ---------- Header bar ---------- */
+#header {
+    -fx-background-color: #10b981;
+}
+
+#header .circle {
+    -fx-fill: #15324F;
+    -fx-stroke: transparent;
+}
+
+.app-title {
+    -fx-fill: #06202f;
+    -fx-font-size: 15px;
+}
+
+/* ---------- Titles ---------- */
+#algorithmLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+}
+
+.section-label {
+    -fx-text-fill: #6087ad;
+    -fx-font-size: 24px;
+    -fx-font-weight: normal;
+}
+
+/* ---------- Divider lines ---------- */
+.divider {
+    -fx-padding: 0;
+}
+.divider .line {
+    -fx-border-color: #10b981 transparent transparent transparent;
+    -fx-border-width: 3 0 0 0;
+}
+
+/* ---------- Gantt chart ---------- */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-padding: 0;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #6087ad;
+    -fx-background-radius: 4;
+}
+.scroll-pane .scroll-bar .track,
+.scroll-pane .scroll-bar .increment-button,
+.scroll-pane .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+#ganttChart {
+    -fx-background-color: #15324F;
+    -fx-background-radius: 0;
+    -fx-border-color: #10b981;
+    -fx-border-width: 1;
+}
+
+/* ---------- Results table ---------- */
+#resultsTable {
+    -fx-background-color: #15324F;
+    -fx-control-inner-background: #15324F;
+    -fx-border-color: #10b981;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: rgba(96, 135, 173, 0.25);
+    -fx-padding: 0;
+}
+
+#resultsTable .column-header-background {
+    -fx-background-color: #0d2740;
+}
+#resultsTable .column-header,
+#resultsTable .filler {
+    -fx-background-color: #0d2740;
+    -fx-border-color: transparent transparent #10b981 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-size: 36px;
+}
+#resultsTable .column-header .label {
+    -fx-text-fill: #10b981;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+#resultsTable .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+#resultsTable .table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+}
+#resultsTable .table-row-cell:selected {
+    -fx-background-color: rgba(16, 185, 129, 0.25);
+}
+#resultsTable .table-cell {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+}
+#resultsTable .placeholder .label {
+    -fx-text-fill: #6087ad;
+}
+#resultsTable .scroll-bar .thumb {
+    -fx-background-color: #6087ad;
+    -fx-background-radius: 4;
+}
+
+/* ---------- Stats on the right ---------- */
+.stat-box {
+    -fx-background-color: #15324F;
+    -fx-background-radius: 12;
+    -fx-border-color: #10b981;
+    -fx-border-radius: 12;
+}
+.stat-box .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Footer ---------- */
+.footer-bar {
+    -fx-background-color: #061E34;
+}
+
+/* ---------- Buttons ---------- */
+.button {
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* outlined (Back to Menu) */
+.outline-button {
+    -fx-background-color: #15324F;
+    -fx-border-color: #10b981;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #10b981;
+}
+.outline-button:hover {
+    -fx-background-color: rgba(16, 185, 129, 0.2);
+}
+.outline-button:pressed {
+    -fx-background-color: rgba(16, 185, 129, 0.35);
+}
+
+/* filled (Back to Input / Export) */
+.primary-button {
+    -fx-background-color: #10b981;
+    -fx-border-color: transparent;
+    -fx-text-fill: #06202f;
+}
+.primary-button:hover {
+    -fx-background-color: #34d399;
+}
+.primary-button:pressed {
+    -fx-background-color: #0e9f6e;
+}
+
+#rootPane {
+    -fx-background-color: linear-gradient(to bottom, #020E27 0%, #153450 100%);
+}
+
+#header {
+    -fx-background-color: #10B981;
+}
+
+@font-face {
+    font-family: "Gabarito";
+    src: url("/fonts/Gabarito/Gabarito-VariableFont_wght.ttf");
+}
+
+Text {
+    -fx-font-family: "Gabarito";
+}
+
+.button {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 14;
+
+    -fx-font-size: 12px;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #34d399;
+}
+
+.button:pressed {
+    -fx-background-color: #059669;
+}
+
+.button:focused {
+    -fx-background-insets: 0;
+}
+
+.textis {
+    -fx-text-fill: white;
+}

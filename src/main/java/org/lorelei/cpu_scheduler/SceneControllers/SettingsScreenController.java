@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.lorelei.cpu_scheduler.Settings;
 
@@ -18,21 +19,46 @@ public class SettingsScreenController implements Initializable {
     private Button addDecimalPlaceButton;
 
     @FXML
+    private Button addDecimalPlaceOut;
+
+    @FXML
     private Button decDecimalPlaceButton;
+
+    @FXML
+    private Button decDecimalPlaceOut;
 
     @FXML
     private Text decimalPlaceLabel;
 
+    @FXML
+    private Text decimalPlaceOut;
 
+    @FXML
+    private HBox header;
 
     @FXML
     private Button menuButton;
 
     @FXML
-    private CheckBox secretAlgoCheckBox;
+    private CheckBox randomFloatCheckBox;
 
     @FXML
-    private CheckBox randomFloatCheckBox;
+    private CheckBox secretAlgoCheckBox;
+
+
+    @FXML
+    void addDecimalPlaceOut(ActionEvent event) {
+        Settings.OutDecimalPlace*=10;
+        if (Settings.OutDecimalPlace > 100000) Settings.OutDecimalPlace = 100000;
+        decimalPlaceOut.setText("Decimal Place: " + 1.0/((double) Settings.OutDecimalPlace ));
+    }
+
+    @FXML
+    void decreaseDecimalOut(ActionEvent event) {
+        Settings.OutDecimalPlace/=10;
+        if (Settings.OutDecimalPlace < 10) Settings.OutDecimalPlace = 10;
+        decimalPlaceOut.setText("Decimal Place: " + 1.0/((double) Settings.OutDecimalPlace ));
+    }
 
     @FXML
     void addDecimalPlace(ActionEvent event) {

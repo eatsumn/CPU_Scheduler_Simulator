@@ -14,10 +14,12 @@ public class FirstComeFirstServed extends Algorithm {
         double time = 0;
         totalWaitingTime = 0;
         totalTurnaroundTime = 0;
+        processWaitList = new ArrayList<Process>(ordered);
         for (Process source : ordered) {
             Process process = new Process(source.processNumber, source.getArrivalTime(), source.getBurstTime());
             if (time < process.getArrivalTime()) {
                 ganttChart.addCell(new GanttCell(time, process.getArrivalTime()));
+                ganttChart.setLastListData(processWaitList,processReadyList,processCompletedList);
                 time = process.getArrivalTime();
             }
             process.startTime = time;
@@ -28,6 +30,13 @@ public class FirstComeFirstServed extends Algorithm {
             totalTurnaroundTime += process.getTurnaroundTime();
             results.add(process);
             ganttChart.addCell(new GanttCell(process.startTime, process.completeTime, process));
+            processReadyList.removeAll(processReadyList);
+            processReadyList.add(process);
+            processCompletedList.addAll(processReadyList);
+            processWaitList.removeFirst();
+
+            ganttChart.setLastListData(processWaitList,processReadyList,processCompletedList);
+
         }
         if (!results.isEmpty()) {
             averageWaitingTime = totalWaitingTime / results.size();
